@@ -15,3 +15,9 @@
 - Claims are phrased as goals, not facts.
 - Serve over `http://` to test (`python -m http.server`); GLB models fail on `file://`.
 - Hosting: GitHub Pages from `main` (`ozbayemrah/oz-industries`). Custom domain planned later; when added, update `website` in `assets/vcard.js`.
+
+## Brand architecture (from `../OZ_Brand_Strategy_Report.pdf`, adapted)
+- Company name stays **OZ Industries** (user decision 2026-10-17). The report says "OZ Systems GmbH" — do not adopt that.
+- **Operation Zenith** = engineering principle, named in the Method section (SEC-03).
+- **MONOLITH Framework** = the product: numbered design rules (M1, in research) + component kit (M2) + review method (M3), both planned 2027. Own section `#monolith` (SEC-05); also named in the Level 03 Assurance tile, the roadmap, and the deck's slide 3 label.
+- Not used on purpose: the O/Z acronym ("Zero-error interaction"), the Green KAIT energy claims, and "Remora". Keep absolute claims ("zero-error", "fully compliant") off the public site.
