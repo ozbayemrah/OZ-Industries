@@ -3,51 +3,61 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>XUX Studio (working name) — Usable where humans barely can</title>
-<meta name="description" content="Human-factors and interface design for space and extreme environments. Styria, Austria. XUX is a temporary working name — brand under construction.">
-<meta property="og:title" content="XUX Studio (working name) — Usable where humans barely can">
-<meta property="og:description" content="Human-factors and interface design for space and extreme environments.">
+<title>OZ Industries — Human–machine systems for in-orbit servicing</title>
+<meta name="description" content="OZ Industries is an aerospace R&D venture in Graz, Austria, developing operator software and modular robotic hardware for in-orbit servicing. GmbH in formation.">
+<meta property="og:title" content="OZ Industries — Human–machine systems for in-orbit servicing">
+<meta property="og:description" content="Operator software and modular robotic hardware for in-orbit servicing. R&D in Graz, Austria.">
+<meta name="theme-color" content="#0B0E14">
 
-<!-- same mono/display pairing as the design/ portfolio, self-hosted -->
 <link rel="stylesheet" href="assets/fonts/fonts.css">
 <script>
-  try { if (localStorage.getItem("theme") !== "dark") document.documentElement.setAttribute("data-theme", "light"); } catch (e) {}
+  /* dark is the primary theme; light only when chosen (shared key with the portfolio) */
+  try { if (localStorage.getItem("theme") === "light") document.documentElement.setAttribute("data-theme", "light"); } catch (e) {}
 </script>
 <style>
   /* =========================================================
-     XUX — built on the OZBAY industrial / HUD portfolio system
-     (design/styles.css): two typefaces, one accent, grid lines,
-     brackets and status text.
+     OZ Industries — "MONOLITH grid"
+     Swiss 12-column grid, dark-first, one signal colour (cyan)
+     and one warning colour (amber). Labels and data in mono,
+     headings in Space Grotesk, sentence case.
      ========================================================= */
   :root {
-    --bg: #141414;
-    --bg-panel: #1a1a1a;
-    --bg-panel-alt: #101010;
-    --fg: #ededed;
-    --muted: #8a8f93;
-    --line: rgba(255, 255, 255, 0.09);
-    --line-strong: rgba(255, 255, 255, 0.18);
-    --accent: #ffffff;
-    --accent-dim: rgba(255, 255, 255, 0.14);
-    --accent-fg: #141414;
-    --hazard: #ff3b30;
-    --hazard-dim: rgba(255, 59, 48, 0.18);
+    --bg: #0B0E14;
+    --bg-1: #0F131B;
+    --bg-2: #141924;
+    --fg: #F4F6F8;
+    --muted: #8D96A5;
+    --dim: #5B6474;
+    --line: rgba(244, 246, 248, 0.08);
+    --line-2: rgba(244, 246, 248, 0.16);
+    --cyan: #00E5FF;
+    --cyan-ink: #00E5FF;          /* cyan used as text */
+    --cyan-dim: rgba(0, 229, 255, 0.10);
+    --amber: #FF9100;
+    --amber-ink: #FF9100;
+    --amber-dim: rgba(255, 145, 0, 0.12);
+    --on-cyan: #0B0E14;
     --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-    --display: "Space Grotesk", var(--mono);
-    --gap: clamp(16px, 2.4vw, 32px);
-    --stripe: repeating-linear-gradient(45deg, var(--hazard-dim), var(--hazard-dim) 6px, transparent 6px, transparent 12px);
+    --display: "Space Grotesk", system-ui, sans-serif;
+    --gutter: clamp(16px, 2.2vw, 28px);
+    --max: 1320px;
   }
   :root[data-theme="light"] {
-    --bg: #f2f1ec;
-    --bg-panel: #e9e7e0;
-    --bg-panel-alt: #dfdcd3;
-    --fg: #16171a;
-    --muted: #6b6f73;
-    --line: rgba(0, 0, 0, 0.09);
-    --line-strong: rgba(0, 0, 0, 0.2);
-    --accent: #16171a;
-    --accent-dim: rgba(0, 0, 0, 0.12);
-    --accent-fg: #f2f1ec;
+    --bg: #F4F6F8;
+    --bg-1: #ECEFF3;
+    --bg-2: #E2E6EC;
+    --fg: #0B0E14;
+    --muted: #4E5866;
+    --dim: #7A8494;
+    --line: rgba(11, 14, 20, 0.09);
+    --line-2: rgba(11, 14, 20, 0.18);
+    --cyan: #00B8CC;
+    --cyan-ink: #00728A;
+    --cyan-dim: rgba(0, 140, 165, 0.10);
+    --amber: #E07A00;
+    --amber-ink: #A35400;
+    --amber-dim: rgba(224, 122, 0, 0.12);
+    --on-cyan: #F4F6F8;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -55,1047 +65,1113 @@
   body {
     background: var(--bg);
     color: var(--fg);
-    font-family: var(--mono);
-    font-size: 14px;
-    line-height: 1.6;
+    font-family: var(--display);
+    font-size: 16px;
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
-  ::selection { background: var(--accent); color: var(--accent-fg); }
+  ::selection { background: var(--cyan); color: var(--on-cyan); }
   a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
 
-  .label {
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  .grid12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+
+  .mono, .label {
     font-family: var(--mono);
     font-size: 11px;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
   }
-  .label--hz { color: var(--hazard); }
+  .label--cyan { color: var(--cyan-ink); }
+  .label--amber { color: var(--amber-ink); }
   .label--fg { color: var(--fg); }
 
-  /* ---------- grain ---------- */
-  .grain {
-    pointer-events: none;
-    position: fixed;
-    inset: 0;
-    z-index: 999;
-    opacity: 0.05;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  /* ---------- header ---------- */
+  header.site {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
   }
-
-  /* ---------- corner brackets (shared) ---------- */
-  .corner {
-    position: absolute;
-    z-index: 2;
-    width: 8px;
-    height: 8px;
-    background: var(--hazard);
-    opacity: 0;
-    transition: opacity 0.15s ease;
+  .hdr { display: flex; align-items: center; gap: 28px; height: 60px; }
+  .logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 22px; letter-spacing: 0.01em; line-height: 1; }
+  .logo b { color: var(--cyan); font-weight: 700; }
+  .logo__tag {
+    padding: 3px 6px;
+    border: 1px solid var(--line-2);
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
-  .corner.tl { top: -1px; left: -1px; }
-  .corner.tr { top: -1px; right: -1px; }
-  .corner.bl { bottom: -1px; left: -1px; }
-  .corner.br { bottom: -1px; right: -1px; }
-  .corner--on { opacity: 1; }
+  .nav { display: flex; gap: 22px; margin-left: 12px; }
+  .nav a { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); transition: color .15s; }
+  .nav a:hover { color: var(--fg); }
+  .hdr__right { margin-left: auto; display: flex; align-items: center; gap: 18px; }
+  .utc { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .utc b { color: var(--fg); font-weight: 400; }
+  .icon-btn {
+    display: inline-grid; place-items: center;
+    width: 32px; height: 32px;
+    border: 1px solid var(--line-2);
+    background: transparent;
+    cursor: pointer;
+    transition: border-color .15s, color .15s;
+  }
+  .icon-btn:hover { border-color: var(--cyan); color: var(--cyan-ink); }
+  .icon-btn .moon { display: none; }
+  :root[data-theme="light"] .icon-btn .sun { display: none; }
+  :root[data-theme="light"] .icon-btn .moon { display: block; }
 
-  /* ---------- buttons: one style site-wide ---------- */
   .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    padding: 10px 27px;
-    border: 1px solid var(--hazard);
-    background: var(--stripe);
-    color: var(--accent);
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 12px 20px;
+    border: 1px solid var(--line-2);
+    background: transparent;
     font-family: var(--mono);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-  .btn:hover { background: var(--accent); color: var(--accent-fg); }
-  .btn--lg { padding: 14px 32px; }
-
-  /* ---------- header ---------- */
-  header.site {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: var(--gap);
-    padding: 18px var(--gap) 14px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--line);
-  }
-  .header__left { display: flex; align-items: center; gap: 28px; }
-  .header__right { display: flex; align-items: center; gap: 28px; }
-  .header__clockgroup { display: flex; align-items: center; gap: 28px; }
-
-  .logo {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: 0.02em;
-  }
-  .logo span { color: var(--hazard); }
-  .office {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.25;
-  }
-  .office strong { color: var(--fg); display: block; font-size: 15px; }
-
-  .nav { display: flex; gap: 22px; }
-  .nav a {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    transition: color 0.15s ease;
-  }
-  .nav a:hover { color: var(--hazard); }
-  .nav .nav__deck { color: var(--hazard); }
-  .nav .nav__deck:hover { color: var(--fg); }
-
-  .status-block { text-align: right; }
-  .status-block .label { display: block; margin-bottom: 2px; }
-  .status-block .label:first-child { color: var(--fg); }
-
-  .clock-block { display: flex; align-items: stretch; }
-  .clock-block__col { display: flex; flex-direction: column; gap: 3px; padding: 0 16px; }
-  .clock-block__col:first-child { padding-left: 0; }
-  .clock-block__col--local { opacity: 0.6; border-left: 1px solid var(--line); }
-  .clock-block__timerow { display: flex; align-items: baseline; gap: 6px; }
-  .clock-block .label { letter-spacing: 0.14em; }
-  .clock-block .time { color: var(--fg); font-variant-numeric: tabular-nums; }
-
-  .header__sep { width: 1px; align-self: stretch; background: var(--line-strong); }
-
-  .theme-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border: 1px solid var(--hazard);
-    background: transparent;
-    color: var(--fg);
-    cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-  .theme-toggle:hover { background: var(--accent); color: var(--accent-fg); }
-  .theme-toggle__icon { display: block; }
-  .theme-toggle__icon--moon { display: none; }
-  :root[data-theme="light"] .theme-toggle__icon--sun { display: none; }
-  :root[data-theme="light"] .theme-toggle__icon--moon { display: block; }
-
-  .header__cta { display: none; }
-  @media (min-width: 1180px) { .header__cta { display: inline-flex; } }
-  @media (max-width: 1180px) { .header__clockgroup { display: none; } }
-  @media (max-width: 860px) { .nav, .office { display: none; } }
-
-  /* ---------- ticker ---------- */
-  .ticker {
-    --ticker-h: 28.5px;
-    position: relative;
-    height: var(--ticker-h);
-    overflow: hidden;
-    background-color: var(--bg-panel-alt);
-    background-image: url("assets/scanning_shape1.png");
-    background-size: 46px 46px;
-    border-bottom: 1px solid var(--line-strong);
-  }
-  .ticker__unit {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    display: inline-flex;
-    align-items: stretch;
+    transition: background .15s, color .15s, border-color .15s;
     white-space: nowrap;
-    animation: ticker-slide 60s linear infinite;
   }
-  @keyframes ticker-slide {
-    0% { transform: translateX(100vw); }
-    100% { transform: translateX(-100%); }
-  }
-  .ticker__corner {
-    flex-shrink: 0;
-    width: var(--ticker-h);
-    margin-right: 8px;
-    display: grid;
-    grid-template-columns: 4fr 9fr 4fr;
-    grid-template-rows: 4fr 9fr 4fr;
-  }
-  .ticker__corner span { background: var(--hazard); }
-  .ticker__corner span:nth-child(1) { grid-column: 1; grid-row: 1; }
-  .ticker__corner span:nth-child(2) { grid-column: 3; grid-row: 1; }
-  .ticker__corner span:nth-child(3) { grid-column: 2; grid-row: 2; }
-  .ticker__corner span:nth-child(4) { grid-column: 1; grid-row: 3; }
-  .ticker__corner span:nth-child(5) { grid-column: 3; grid-row: 3; }
-  .ticker__band { flex-shrink: 0; background: var(--hazard); color: var(--accent-fg); }
-  .ticker__track {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 6px 100px;
-  }
-  .ticker__track span { margin-right: 48px; }
-  .ticker__track span:last-child { margin-right: 0; }
-  @media (prefers-reduced-motion: reduce) {
-    .ticker__unit { animation: none; transform: none; }
-  }
+  .btn:hover { border-color: var(--fg); }
+  .btn--primary { background: var(--cyan); border-color: var(--cyan); color: var(--on-cyan); }
+  .btn--primary:hover { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+  .btn--sm { padding: 8px 14px; }
+  .btn .arr { transition: transform .15s; }
+  .btn:hover .arr { transform: translateX(3px); }
+
+  @media (max-width: 1080px) { .utc { display: none; } }
+  @media (max-width: 900px) { .nav { display: none; } }
+  @media (max-width: 420px) { .hdr__deck { display: none; } }
+
+  /* ---------- formation note ---------- */
+  .formation { border-bottom: 1px solid var(--line); background: var(--bg-1); }
+  .formation .wrap { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px; }
+  .formation__flag { display: inline-flex; align-items: center; gap: 8px; color: var(--amber-ink); }
+  .formation__flag::before { content: ""; width: 6px; height: 6px; background: var(--amber); }
 
   /* ---------- hero ---------- */
-  .hero {
-    position: relative;
-    padding: 72px var(--gap) 64px;
-    border-bottom: 1px solid var(--line);
-    background:
-      linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 100% 42px,
-      linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 42px 100%,
-      var(--bg-panel-alt);
-  }
-  .hero__eyebrow { display: flex; gap: 24px; flex-wrap: wrap; }
-  .hero h1 {
-    font-family: var(--display);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: clamp(40px, 7.4vw, 112px);
-    line-height: 0.94;
-    letter-spacing: -0.01em;
-    max-width: 14ch;
-    margin: 24px 0 28px;
-    color: var(--accent);
-    text-shadow: 0 0 18px var(--accent-dim);
-  }
-  .hero h1 em { font-style: normal; color: var(--hazard); text-shadow: none; }
-  .hero__lead {
-    font-size: clamp(13px, 1.5vw, 16px);
-    color: var(--muted);
-    max-width: 640px;
-  }
-  .hero__actions { margin-top: 34px; display: flex; gap: 12px; flex-wrap: wrap; }
-
-  .conditions { margin-bottom: 48px; }
-  .conditions__label { display: block; margin-bottom: 12px; }
-  .readout {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-  }
-  .readout::after {
+  .hero { position: relative; border-bottom: 1px solid var(--line); overflow: hidden; }
+  /* the 12-column grid made visible, faintly */
+  .hero::before {
     content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -14px;
-    height: 2px;
-    background: var(--hazard);
+    position: absolute; inset: 0;
+    max-width: var(--max);
+    margin: 0 auto;
+    background:
+      repeating-linear-gradient(90deg,
+        transparent 0, transparent calc((100% - 11 * var(--gutter)) / 12),
+        var(--line) calc((100% - 11 * var(--gutter)) / 12), var(--line) calc((100% - 11 * var(--gutter)) / 12 + 1px),
+        transparent calc((100% - 11 * var(--gutter)) / 12 + 1px), transparent calc((100% - 11 * var(--gutter)) / 12 + var(--gutter)));
+    background-clip: content-box;
+    padding: 0 var(--gutter);
+    pointer-events: none;
+    opacity: .7;
   }
-  .readout__cell {
-    padding: 14px 16px 16px;
-    background-image: var(--stripe);
+  .hero__grid { position: relative; padding-top: clamp(48px, 7vw, 96px); padding-bottom: clamp(40px, 5vw, 72px); row-gap: 40px; align-items: center; }
+  .hero__text { grid-column: 1 / span 7; }
+  .hero__viz { grid-column: 8 / span 5; }
+  .hero__eyebrow { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+  .hero h1 {
+    font-weight: 500;
+    font-size: clamp(36px, 4.8vw, 66px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    margin: 26px 0 24px;
+    max-width: 17ch;
   }
-  .readout__cell .label .dot {
-    display: inline-block;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--hazard);
-    margin-right: 6px;
-    box-shadow: 0 0 6px var(--hazard);
-    vertical-align: 1px;
+  .hero h1 span { color: var(--muted); }
+  .hero__lead { font-size: clamp(16px, 1.45vw, 19px); color: var(--muted); max-width: 52ch; }
+  .hero__lead strong { color: var(--fg); font-weight: 500; }
+  .hero__actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 34px; }
+
+  /* simulation panel */
+  .panel { border: 1px solid var(--line-2); background: var(--bg-1); }
+  .panel__head, .panel__foot {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
   }
-  .readout__cell b {
-    display: block;
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: 26px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin: 6px 0 2px;
-  }
-  .readout__cell small { color: var(--muted); font-size: 12px; }
+  .panel__foot { border-bottom: 0; border-top: 1px solid var(--line); flex-wrap: wrap; }
+  .live { display: inline-flex; align-items: center; gap: 8px; }
+  .live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); animation: blink 2s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: .25; } }
+  .sim { position: relative; aspect-ratio: 1 / 0.86; }
+  .sim canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .readouts { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+  .readouts div { white-space: nowrap; padding: 10px 14px; border-left: 1px solid var(--line); }
+  .readouts div:first-child { border-left: 0; }
+  .readouts b { display: block; font-family: var(--mono); font-weight: 400; font-size: 15px; color: var(--fg); font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .readouts .warn b { color: var(--amber-ink); }
+  .slider { white-space: nowrap; display: flex; align-items: center; gap: 12px; flex: 1; min-width: 200px; }
+  .slider input { flex: 1; accent-color: var(--cyan); }
+  .legend { display: flex; gap: 14px; }
+  .legend i { display: inline-block; width: 14px; height: 0; border-top: 2px solid var(--cyan); vertical-align: middle; margin-right: 6px; }
+  .legend i.ghost { border-top: 2px dashed var(--muted); }
+
+  .facts { border-top: 1px solid var(--line); }
+  .facts .grid12 > div { grid-column: span 3; padding: 18px 0; border-left: 1px solid var(--line); padding-left: 16px; }
+  .facts .grid12 > div:first-child { border-left: 0; padding-left: 0; }
+  .facts b { display: block; font-weight: 500; font-size: 15px; margin-top: 4px; }
 
   /* ---------- sections ---------- */
-  .sec {
-    position: relative;
-    scroll-margin-top: 80px;
-    border-bottom: 1px solid var(--line);
-    padding: var(--gap) var(--gap) calc(var(--gap) * 2.4);
-    background: var(--bg);
-  }
-  .sec--alt { background: var(--bg-panel); }
-  .sec__bar {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 18px;
-  }
-  .sec__head {
+  .sec { border-bottom: 1px solid var(--line); padding: clamp(64px, 8vw, 112px) 0; scroll-margin-top: 60px; }
+  .sec--alt { background: var(--bg-1); }
+  .sec__head { row-gap: 18px; margin-bottom: clamp(36px, 4.5vw, 60px); }
+  .sec__idx { grid-column: 1 / span 3; display: flex; flex-direction: column; gap: 6px; }
+  .sec__idx .n { font-family: var(--mono); font-size: 13px; color: var(--cyan-ink); }
+  .sec__title { grid-column: 4 / span 9; }
+  .sec__title h2 { font-weight: 500; font-size: clamp(30px, 3.6vw, 50px); line-height: 1.06; letter-spacing: -0.02em; max-width: 22ch; }
+  .sec__title p { color: var(--muted); font-size: 17px; max-width: 60ch; margin-top: 18px; }
+  .body { grid-column: 4 / span 9; }
+  .body--full { grid-column: 1 / -1; }
+
+  .h3 { font-weight: 500; font-size: 22px; line-height: 1.2; letter-spacing: -0.01em; }
+  .muted { color: var(--muted); }
+
+  /* ---------- problem ---------- */
+  .fails { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line-2); }
+  .fail { padding: 26px 24px 28px; border-left: 1px solid var(--line-2); display: flex; flex-direction: column; gap: 14px; }
+  .fail:first-child { border-left: 0; }
+  .fail svg { width: 100%; height: 120px; display: block; margin-bottom: 6px; }
+  .fail p { color: var(--muted); font-size: 15px; }
+  .fail__kv { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 10px; }
+  .fail__kv b { font-family: var(--mono); font-weight: 400; font-size: 12px; color: var(--amber-ink); text-align: right; }
+  .stroke { stroke: var(--muted); }
+  .stroke-fg { stroke: var(--fg); }
+  .stroke-amber { stroke: var(--amber); }
+  .stroke-cyan { stroke: var(--cyan); }
+  .fill-amber { fill: var(--amber); }
+  .fill-muted { fill: var(--muted); }
+  .svg-text { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; fill: var(--muted); }
+
+  /* ---------- system ---------- */
+  .chain {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--gap);
-    align-items: end;
-    padding-bottom: 28px;
-    margin-bottom: 32px;
-    border-bottom: 1px solid var(--line-strong);
+    grid-template-columns: 1fr 24px 1.25fr 64px 1fr 24px 1fr 24px 1fr;
+    align-items: stretch;
+    margin-bottom: 28px;
   }
-  .sec__head h2 {
-    font-family: var(--display);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: clamp(28px, 4vw, 48px);
-    line-height: 1;
-    max-width: 18ch;
+  .node {
+    border: 1px solid var(--line-2);
+    background: var(--bg);
+    padding: 14px 14px 16px;
+    display: flex; flex-direction: column; gap: 6px;
+    transition: border-color .2s, background .2s;
+    min-width: 0;
   }
-  .sec__head p { color: var(--muted); max-width: 56ch; }
+  .sec--alt .node { background: var(--bg); }
+  .node .h3 { font-size: 17px; }
+  .node small { font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: .04em; line-height: 1.45; }
+  .node.on { border-color: var(--cyan); background: var(--cyan-dim); }
+  .node.on .label { color: var(--cyan-ink); }
+  .node--ext { border-style: dashed; }
+  .link { position: relative; align-self: center; height: 1px; background: var(--line-2); }
+  .link--lat { background: repeating-linear-gradient(90deg, var(--amber) 0 4px, transparent 4px 8px); height: 2px; }
+  .link--lat span { position: absolute; left: 50%; top: -22px; transform: translateX(-50%); font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em; color: var(--amber-ink); white-space: nowrap; }
+  .link--lat span.b { top: 8px; }
 
-  /* ---------- tile cards (dashed, bracket-on-hover) ---------- */
-  .tiles { display: grid; gap: 16px; }
-  .tiles--2 { grid-template-columns: repeat(2, 1fr); }
-  .tiles--3 { grid-template-columns: repeat(3, 1fr); }
-  .tile {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 24px 22px 26px;
-    border: 1px dashed var(--line-strong);
-    background: var(--bg-panel-alt);
-    transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  .tabs { display: flex; border: 1px solid var(--line-2); border-bottom: 0; }
+  .tab {
+    flex: 1;
+    text-align: left;
+    padding: 14px 18px;
+    background: transparent;
+    border: 0;
+    border-left: 1px solid var(--line-2);
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    display: flex; flex-direction: column; gap: 4px;
+    transition: background .15s;
   }
-  .tile:hover {
-    border-color: var(--accent);
-    border-style: solid;
-    background: var(--accent-dim);
-    transform: translateY(-3px);
-  }
-  .tile:hover .corner { opacity: 1; }
-  .tile h3 {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: clamp(20px, 2vw, 24px);
-    line-height: 1.12;
-    text-transform: uppercase;
-  }
-  .tile p { color: var(--muted); }
-  .tile ul { list-style: none; margin-top: 6px; border-top: 1px solid var(--line); }
-  .tile li {
-    display: flex;
-    gap: 10px;
-    padding: 9px 0;
-    border-bottom: 1px solid var(--line);
-    font-size: 12px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-  .tile li::before { content: "▸"; color: var(--hazard); }
-  /* highlighted tile — the core offer: solid hazard frame + stripe */
-  .tile--hl { border: 1px solid var(--hazard); background: var(--stripe), var(--bg-panel-alt); }
-  .tile--hl .corner { opacity: 1; }
-  .tile--hl:hover { border-color: var(--hazard); }
+  .tab:first-child { border-left: 0; }
+  .tab:hover { background: var(--bg-2); }
+  .tab .h3 { font-size: 18px; }
+  .tab[aria-selected="true"] { border-bottom-color: var(--cyan); background: var(--bg); }
+  .tab[aria-selected="true"] .label { color: var(--cyan-ink); }
+  .tabpanel { border: 1px solid var(--line-2); background: var(--bg); padding: clamp(22px, 3vw, 36px); }
+  .tabpanel[hidden] { display: none; }
+  .pillar { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(22px, 3vw, 44px); }
+  .pillar__intro p { color: var(--muted); margin-top: 12px; }
+  .pillar__intro .tag { display: inline-block; margin-top: 18px; padding: 4px 8px; border: 1px solid var(--line-2); }
+  .spec { border-top: 1px solid var(--line-2); }
+  .spec > div { display: grid; grid-template-columns: 150px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .spec dt { padding-top: 3px; }
+  .spec dd { color: var(--muted); font-size: 15px; }
+  .spec dd strong { color: var(--fg); font-weight: 500; display: block; margin-bottom: 2px; }
 
-  /* ---------- method ---------- */
-  .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-  .step {
-    position: relative;
-    padding: 16px 16px 20px;
-    border-top: 2px solid var(--line-strong);
-    background: var(--bg-panel-alt);
-    transition: border-color 0.15s ease;
-  }
-  .step:hover { border-top-color: var(--hazard); }
-  .step__num {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: 38px;
-    line-height: 1;
-    color: var(--line-strong);
-    transition: color 0.15s ease;
-  }
-  .step:hover .step__num { color: var(--hazard); }
-  .step b {
-    display: block;
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: 20px;
-    text-transform: uppercase;
-    margin: 12px 0 6px;
-  }
-  .step p { color: var(--muted); font-size: 13px; }
-  .note {
-    position: relative;
-    margin-top: 32px;
-    padding: 18px 22px;
-    border: 1px solid var(--line-strong);
-    color: var(--muted);
-  }
-  .note b { color: var(--fg); }
-
-  /* ---------- research spec table ---------- */
-  .spec { border: 1px solid var(--line-strong); }
-  .spec .row { display: grid; grid-template-columns: 180px 1fr 1fr; border-bottom: 1px solid var(--line); }
-  .spec .row:last-child { border-bottom: 0; }
-  .spec .row > div { padding: 20px 22px; }
-  .spec .row > div + div { border-left: 1px solid var(--line); }
-  .spec .th { background: var(--bg-panel-alt); }
-  .spec .th > div { padding-top: 12px; padding-bottom: 12px; }
-  .spec .k { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--hazard); }
-  .spec h4 {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: 19px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .spec p { color: var(--muted); font-size: 13px; }
-
-  /* ---------- founder ---------- */
-  .founder { display: grid; grid-template-columns: 1fr 1.3fr; gap: calc(var(--gap) * 1.6); align-items: start; }
-  .idcard {
-    position: relative;
-    padding: 26px;
-    border: 1px solid var(--hazard);
-    background: var(--bg-panel-alt);
-  }
-  .idcard__top {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 14px;
-    border-bottom: 1px dashed var(--line-strong);
-  }
-  .idcard h3 {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: 34px;
-    text-transform: uppercase;
-    line-height: 1;
-    margin: 20px 0 8px;
-  }
-  .idcard dl { margin-top: 22px; border-top: 1px solid var(--line); }
-  .idcard dl div {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--line);
-    font-size: 13px;
-  }
-  .idcard dd { text-align: right; }
-  .idcard__barcode {
-    margin-top: 18px;
-    height: 22px;
-    background: repeating-linear-gradient(90deg,
-      var(--hazard) 0 2px, transparent 2px 4px,
-      var(--hazard) 4px 5px, transparent 5px 9px,
-      var(--hazard) 9px 12px, transparent 12px 14px);
-    opacity: 0.85;
-  }
-  .founder__text p { color: var(--muted); margin-bottom: 18px; font-size: 15px; }
-  .founder__text p:first-child { color: var(--fg); }
+  /* ---------- model ---------- */
+  .engines { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line-2); }
+  .engine { padding: clamp(22px, 3vw, 36px); display: flex; flex-direction: column; gap: 14px; }
+  .engine + .engine { border-left: 1px solid var(--line-2); }
+  .engine--core { background: linear-gradient(180deg, var(--cyan-dim), transparent 70%); }
+  .engine .h3 { font-size: 26px; }
+  .engine ul { list-style: none; border-top: 1px solid var(--line); margin-top: 6px; }
+  .engine li { padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 15px; display: flex; gap: 12px; }
+  .engine li::before { content: "—"; color: var(--dim); }
+  .loop { margin-top: 18px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .loop .line { flex: 1; min-width: 40px; height: 1px; background: var(--line-2); }
 
   /* ---------- roadmap ---------- */
-  .road { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; position: relative; }
-  .road::before {
-    content: "";
-    position: absolute;
-    left: 0; right: 0; top: 7px;
-    height: 1px;
-    background: var(--line-strong);
-  }
-  .ph { position: relative; padding-right: 24px; }
-  .ph::before {
-    content: "";
-    display: block;
-    width: 15px;
-    height: 15px;
-    border: 1px solid var(--fg);
-    background: var(--bg-panel);
-    margin-bottom: 22px;
-  }
-  .ph--now::before { background: var(--hazard); border-color: var(--hazard); box-shadow: 0 0 10px var(--hazard); }
-  .ph h3 {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: 22px;
-    text-transform: uppercase;
-    margin: 8px 0 8px;
-  }
-  .ph p { color: var(--muted); font-size: 13px; }
+  .phases { display: grid; grid-template-columns: repeat(3, 1fr); position: relative; margin-bottom: clamp(44px, 5vw, 64px); }
+  .phases::before { content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 1px; background: var(--line-2); }
+  .phase { position: relative; padding-right: 28px; }
+  .phase::before { content: ""; display: block; width: 13px; height: 13px; border: 1px solid var(--fg); background: var(--bg); margin-bottom: 20px; }
+  .phase--now::before { background: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 0 4px var(--cyan-dim); }
+  .phase .h3 { margin: 6px 0 10px; }
+  .phase ul { list-style: none; }
+  .phase li { color: var(--muted); font-size: 15px; padding: 3px 0 3px 16px; position: relative; }
+  .phase li::before { content: ""; position: absolute; left: 0; top: 13px; width: 7px; height: 1px; background: var(--dim); }
 
-  /* ---------- contact ---------- */
-  .contact {
-    background:
-      linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 100% 42px,
-      linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 42px 100%,
-      var(--bg-panel-alt);
-  }
-  .contact h2 {
-    font-family: var(--display);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: clamp(34px, 6vw, 80px);
-    line-height: 0.96;
-    max-width: 16ch;
-    margin: 24px 0 24px;
-  }
-  .contact__lead { color: var(--muted); max-width: 56ch; font-size: 15px; }
-  .links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 44px; }
-  .links .tile { gap: 8px; }
-  .links .v { font-family: var(--display); font-weight: 700; font-size: 18px; word-break: break-word; }
-  .links .tile:hover .v { color: var(--hazard); }
-
-  /* ---------- brand-under-construction signals ---------- */
-  .logo { display: inline-flex; align-items: center; gap: 10px; }
-  .logo__tag {
-    padding: 3px 6px;
-    border: 1px dashed var(--hazard);
-    font-family: var(--mono);
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--hazard);
-  }
-  .wip {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    flex-wrap: wrap;
-    padding: 9px var(--gap);
-    background: var(--stripe), var(--bg-panel-alt);
-    border-bottom: 1px solid var(--hazard);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .wip__flag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 3px 9px;
-    background: var(--hazard);
-    color: #141414;
-    font-weight: 700;
-  }
-  .wip__flag::before { content: "▲"; font-size: 9px; }
-  .wip strong { color: var(--fg); }
-
-  /* ---------- hero contact card QR (vCard) ---------- */
-  .hero__top {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: calc(var(--gap) * 1.5);
-    align-items: stretch;   /* card spans eyebrow → buttons */
-  }
-  .vcard {
+  .gantt { border: 1px solid var(--line-2); background: var(--bg); }
+  .gantt__head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 14px 18px; border-bottom: 1px solid var(--line-2); }
+  .grow { display: grid; grid-template-columns: 240px repeat(12, 1fr); border-bottom: 1px solid var(--line); min-height: 46px; }
+  .grow:last-child { border-bottom: 0; }
+  .grow > .gl { padding: 12px 18px; font-size: 14px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--line-2); }
+  .grow > .gl small { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+  .grow--months > div { font-family: var(--mono); font-size: 10px; color: var(--muted); display: grid; place-items: center; }
+  .grow--months { min-height: 32px; background: var(--bg-1); }
+  .gcell { position: relative; border-left: 1px solid var(--line); }
+  .bar {
+    align-self: center;
+    height: 14px;
+    margin: 0 3px;
+    background: var(--cyan-dim);
+    border: 1px solid var(--cyan);
     position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 268px;
-    padding: 18px;
-    border: 1px solid var(--hazard);
-    background: var(--bg-panel-alt);
+    z-index: 1;
   }
-  .vcard__head {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 10px;
-    border-bottom: 1px dashed var(--line-strong);
+  .bar--hw { background: repeating-linear-gradient(45deg, var(--cyan-dim) 0 4px, transparent 4px 8px); }
+  .bar--test { border-color: var(--muted); background: transparent; border-style: dashed; }
+  .ms {
+    align-self: center;
+    justify-self: end;
+    width: 12px; height: 12px;
+    background: var(--amber);
+    transform: translateX(50%) rotate(45deg);
+    position: relative; z-index: 2;
   }
-  /* QR stays dark-on-white in both themes — inverted codes scan badly */
-  /* square QR; on desktop the inline script widens the card so the
-     QR fills whatever height the hero text leaves (fitVcard) */
-  .vcard__qr {
-    width: 100%;
-    aspect-ratio: 1;
-    padding: 10px;
-    background: #ffffff;
+  .gantt__foot { padding: 12px 18px; border-top: 1px solid var(--line-2); display: flex; gap: 22px; flex-wrap: wrap; }
+  .key { display: inline-flex; gap: 8px; align-items: center; }
+  .key i { width: 18px; height: 10px; border: 1px solid var(--cyan); background: var(--cyan-dim); }
+  .key i.hw { background: repeating-linear-gradient(45deg, var(--cyan-dim) 0 3px, transparent 3px 6px); }
+  .key i.test { border: 1px dashed var(--muted); background: transparent; }
+  .key i.ms { width: 9px; height: 9px; border: 0; background: var(--amber); transform: rotate(45deg); margin: 0 2px; }
+
+  /* ---------- ecosystem ---------- */
+  .eco { border-top: 1px solid var(--line-2); }
+  .eco__row { display: grid; grid-template-columns: 3fr 5fr 2fr; gap: var(--gutter); padding: 18px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .eco__row .h3 { font-size: 19px; }
+  .eco__row p { color: var(--muted); font-size: 15px; }
+  .status { justify-self: end; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .status::before { content: ""; width: 7px; height: 7px; border: 1px solid currentColor; }
+  .status--active { color: var(--cyan-ink); }
+  .status--active::before { background: var(--cyan); border-color: var(--cyan); }
+  .status--applying { color: var(--amber-ink); }
+  .status--applying::before { background: var(--amber); border-color: var(--amber); }
+  .eco__note { margin-top: 18px; }
+
+  /* ---------- founder + contact ---------- */
+  .founder { display: grid; grid-template-columns: 4fr 5fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
+  .idcard { border: 1px solid var(--line-2); background: var(--bg); }
+  .idcard__top { display: flex; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .idcard__body { display: grid; grid-template-columns: 1fr 132px; gap: 18px; padding: 20px 16px; align-items: start; }
+  .idcard h3 { font-weight: 500; font-size: 30px; letter-spacing: -0.015em; line-height: 1.05; }
+  .idcard .role { margin-top: 8px; }
+  .qr { background: #fff; padding: 8px; aspect-ratio: 1; }
+  .qr svg { display: block; width: 100%; height: 100%; }
+  .qr:empty::after { content: "QR"; display: grid; place-items: center; height: 100%; font-family: var(--mono); font-size: 10px; color: #8a8f93; }
+  .idcard dl { border-top: 1px solid var(--line); }
+  .idcard dl div { display: flex; justify-content: space-between; gap: 16px; padding: 10px 16px; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .idcard dd { text-align: right; }
+  .idcard__actions { display: flex; gap: 8px; padding: 14px 16px; flex-wrap: wrap; }
+  .founder__text p { color: var(--muted); font-size: 17px; margin-bottom: 18px; }
+  .founder__text p:first-child { color: var(--fg); font-size: 20px; line-height: 1.45; }
+
+  .calls { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gutter); margin-top: clamp(48px, 6vw, 80px); }
+  .call {
+    position: relative;
+    display: flex; flex-direction: column; gap: 12px;
+    padding: 22px 22px 20px;
+    border: 1px solid var(--line-2);
+    background: var(--bg);
+    transition: border-color .15s, transform .15s;
   }
-  .vcard__hint { margin-top: auto; }
-  .vcard__qr svg { display: block; width: 100%; height: 100%; }
-  .vcard__qr:empty::after {
-    content: "QR // loading";
-    display: grid;
-    place-items: center;
-    height: 100%;
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #8a8f93;
-  }
-  .vcard__hint { color: var(--muted); font-size: 12px; line-height: 1.5; }
-  .vcard__btn { width: 100%; padding-left: 12px; padding-right: 12px; }
-  @media (max-width: 900px) {
-    .hero__top { grid-template-columns: 1fr; align-items: start; }
-  }
-  @media (max-width: 480px) {
-    .vcard { width: 100%; }
-  }
+  .call:hover { border-color: var(--cyan); transform: translateY(-2px); }
+  .call p { color: var(--muted); font-size: 15px; }
+  .call .go { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; }
+  .call:hover .go .label { color: var(--cyan-ink); }
 
   /* ---------- footer ---------- */
-  footer.site { padding: 40px var(--gap) 28px; background: var(--bg-panel-alt); }
-  .footer__top {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 24px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--line);
-  }
-  .footer__wordmark { font-family: var(--display); font-weight: 700; font-size: 22px; text-transform: uppercase; }
-  .footer__wordmark span { color: var(--hazard); }
-  .footer__links { display: flex; gap: 20px; flex-wrap: wrap; }
-  .footer__links a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-  .footer__links a:hover { color: var(--accent); }
-  .footer__bottom {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 18px;
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-  }
+  footer.site { padding: 36px 0 28px; }
+  .ftr { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; align-items: baseline; }
+  .ftr nav { display: flex; gap: 20px; flex-wrap: wrap; }
+  .ftr nav a:hover { color: var(--fg); }
 
   /* ---------- reveal ---------- */
-  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
   .reveal.in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .live::before { animation: none; }
+  }
 
   /* ---------- responsive ---------- */
-  @media (max-width: 900px) {
-    .sec__head { grid-template-columns: 1fr; gap: 12px; }
-    .tiles--2, .tiles--3, .links { grid-template-columns: 1fr; }
-    .readout { grid-template-columns: 1fr 1fr; }
-    .steps { grid-template-columns: 1fr; }
-    .spec .row { grid-template-columns: 1fr; }
-    .spec .row > div + div { border-left: 0; border-top: 1px solid var(--line); }
-    .spec .th { display: none; }
-    .road { grid-template-columns: 1fr; gap: 34px; }
-    .road::before { display: none; }
-    .founder { grid-template-columns: 1fr; }
+  @media (max-width: 1100px) {
+    .hero__text { grid-column: 1 / -1; }
+    .hero__viz { grid-column: 1 / -1; max-width: 640px; }
+    .chain { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .chain .link { display: none; }
+    .chain .node--wide { grid-column: span 2; }
   }
-  @media (max-width: 480px) {
-    .readout { grid-template-columns: 1fr; }
-    .readout__cell b { font-size: 21px; }
-    .hero__actions .btn { width: 100%; }
+  @media (max-width: 900px) {
+    .sec__idx, .sec__title, .body { grid-column: 1 / -1; }
+    .sec__idx { flex-direction: row; gap: 14px; }
+    .facts .grid12 > div { grid-column: span 6; border-left: 0; padding-left: 0; border-top: 1px solid var(--line); }
+    .fails { grid-template-columns: 1fr; }
+    .fail { border-left: 0; border-top: 1px solid var(--line-2); }
+    .fail:first-child { border-top: 0; }
+    .tabs { flex-direction: column; }
+    .tab { border-left: 0; border-top: 1px solid var(--line-2); border-bottom: 0; border-left: 2px solid transparent; }
+    .tab:first-child { border-top: 0; }
+    .tab[aria-selected="true"] { border-left-color: var(--cyan); }
+    .pillar { grid-template-columns: 1fr; }
+    .engines { grid-template-columns: 1fr; }
+    .engine + .engine { border-left: 0; border-top: 1px solid var(--line-2); }
+    .phases { grid-template-columns: 1fr; gap: 32px; }
+    .phases::before { display: none; }
+    .grow { grid-template-columns: 1fr; }
+    .grow > .gl { border-right: 0; padding-bottom: 4px; }
+    .gtrack { display: grid; grid-template-columns: repeat(12, 1fr); padding: 0 12px 12px; }
+    .grow--months { display: none; }
+    .eco__row { grid-template-columns: 1fr; gap: 6px; }
+    .status { justify-self: start; }
+    .founder { grid-template-columns: 1fr; }
+    .calls { grid-template-columns: 1fr; }
+  }
+  @media (min-width: 901px) { .gtrack { display: contents; } }
+  @media (max-width: 560px) {
+    .readouts { grid-template-columns: 1fr 1fr; }
+    .readouts div:nth-child(3) { border-left: 0; }
+    .readouts div:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .chain { grid-template-columns: 1fr; }
+    .chain .node--wide { grid-column: auto; }
+    .spec > div { grid-template-columns: 1fr; gap: 4px; }
+    .idcard__body { grid-template-columns: 1fr 96px; }
+    .hero__actions .btn { flex: 1; }
   }
 </style>
 </head>
 <body>
-<div class="grain" aria-hidden="true"></div>
 
 <header class="site">
-  <div class="header__left">
-    <a href="#top" class="logo" title="XUX is a temporary working name">XUX<span>.</span><span class="logo__tag">Working name</span></a>
-    <div class="office">
-      XUX Studio
-      <strong>Human Factors Department</strong>
-    </div>
-    <nav class="nav">
-      <a href="#offer">Services</a>
-      <a href="#method">Method</a>
-      <a href="#research">Research</a>
-      <a href="#about">About</a>
-      <a href="work-system.html" class="nav__deck">Work system ▸</a>
+  <div class="wrap hdr">
+    <a href="#top" class="logo" title="OZ Industries GmbH (in formation)">OZ<b>.</b><span class="logo__tag">Industries</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#problem">Problem</a>
+      <a href="#system">System</a>
+      <a href="#model">Model</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#ecosystem">Ecosystem</a>
+      <a href="#founder">Founder</a>
     </nav>
-  </div>
-
-  <div class="header__right">
-    <div class="header__clockgroup">
-      <div class="status-block">
-        <span class="label">Location: Styria, AT</span>
-        <span class="label">Phase: Research</span>
-      </div>
-      <div class="clock-block">
-        <div class="clock-block__col">
-          <div class="clock-block__timerow">
-            <span class="label" id="clock-zone-vienna">GMT</span>
-            <span class="label time" id="clock-time">--:--:--</span>
-          </div>
-          <span class="label" id="clock-date">Loading</span>
-        </div>
-        <div class="clock-block__col clock-block__col--local">
-          <div class="clock-block__timerow">
-            <span class="label">Local Time</span>
-            <span class="label time" id="clock-time-local">--:--:--</span>
-          </div>
-          <span class="label" id="clock-date-local">Loading</span>
-        </div>
-      </div>
-      <span class="header__sep" aria-hidden="true"></span>
+    <div class="hdr__right">
+      <span class="utc">GRAZ 47.07°N 15.44°E · UTC <b id="utc">--:--:--</b></span>
+      <a class="btn btn--sm hdr__deck" href="work-system.html">Briefing deck <span class="arr">→</span></a>
+      <button class="icon-btn" id="theme" type="button" aria-label="Switch to light theme" aria-pressed="false">
+        <svg class="sun" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.4 4.4l2.1 2.1M17.5 17.5l2.1 2.1M4.4 19.6l2.1-2.1M17.5 6.5l2.1-2.1"/></g></svg>
+        <svg class="moon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      </button>
     </div>
-
-    <a href="#contact" class="btn header__cta">
-      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-        <rect x="1.5" y="4.5" width="21" height="15" rx="1" fill="none" stroke="currentColor" stroke-width="1.6" />
-        <path d="M2.5 6 L12 13 L21.5 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-      <span>Comms — Activate</span>
-    </a>
-
-    <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light theme">
-      <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-        <circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6" />
-        <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-          <line x1="12" y1="1.5" x2="12" y2="4.5" /><line x1="12" y1="19.5" x2="12" y2="22.5" />
-          <line x1="1.5" y1="12" x2="4.5" y2="12" /><line x1="19.5" y1="12" x2="22.5" y2="12" />
-          <line x1="4.4" y1="4.4" x2="6.5" y2="6.5" /><line x1="17.5" y1="17.5" x2="19.6" y2="19.6" />
-          <line x1="4.4" y1="19.6" x2="6.5" y2="17.5" /><line x1="17.5" y1="6.5" x2="19.6" y2="4.4" />
-        </g>
-      </svg>
-      <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-        <path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
-      </svg>
-    </button>
   </div>
 </header>
 
-<div class="wip" role="note">
-  <span class="wip__flag">Brand under construction</span>
-  <span><strong>"XUX"</strong> is a temporary working name. Final name and identity are in development.</span>
-</div>
-
-<div class="ticker" aria-hidden="true">
-  <div class="ticker__unit">
-    <div class="ticker__corner"><span></span><span></span><span></span><span></span><span></span></div>
-    <div class="ticker__band">
-      <div class="ticker__track">
-        <span>XUX Studio status: research phase</span><span>/</span>
-        <span>Thesis: FH JOANNEUM 2026</span><span>/</span>
-        <span>Company launch: Q1 2027</span><span>/</span>
-        <span>Seeking early partners</span><span>/</span>
-        <span>Space &amp; extreme environments</span>
-      </div>
-    </div>
+<div class="formation" role="note">
+  <div class="wrap">
+    <span class="label formation__flag">GmbH in formation</span>
+    <span class="label">OZ Industries GmbH is being founded · Firmenbuch entry pending · Operational launch planned April 2027</span>
   </div>
 </div>
 
 <main id="top">
 
-  <div class="hero">
-   <div class="hero__top">
-   <div class="hero__main">
-    <div class="hero__eyebrow">
-      <span class="label label--hz">XUX Studio</span>
-      <span class="label">Styria, Austria</span>
-      <span class="label">Est. 2027</span>
-      <span class="label label--fg">HMI // Human–machine interaction // Extreme-environment usability</span>
-    </div>
-    <h1>Usable <em>where humans barely can.</em></h1>
-    <p class="hero__lead">Human–machine interface (HMI) design and usability testing for space and extreme environments. We design, test and specify how people control machines when gloves, vibration, CO2 and time pressure take away their precision.</p>
-    <div class="hero__actions">
-      <a class="btn btn--lg" href="#contact">Book a conversation</a>
-      <a class="btn btn--lg" href="#offer">What we do</a>
-    </div>
-   </div>
-    <aside class="vcard">
-      <i class="corner tl corner--on"></i><i class="corner tr corner--on"></i><i class="corner bl corner--on"></i><i class="corner br corner--on"></i>
-      <div class="vcard__head"><span class="label label--hz">Contact card</span><span class="label">Scan to save</span></div>
-      <div class="vcard__qr" id="vcard-qr" data-vcard-qr role="img" aria-label="QR code: save Emrah Özbay's contact card"></div>
-      <p class="vcard__hint">Point your camera here, add me to your phone. Phone, email, website, LinkedIn.</p>
-      <a class="btn vcard__btn" id="vcard-download" data-vcard-download href="#contact" download="Emrah-Ozbay.vcf">Save contact (.vcf)</a>
-    </aside>
-   </div>
-  </div>
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <div class="wrap grid12 hero__grid">
+      <div class="hero__text">
+        <div class="hero__eyebrow">
+          <span class="label label--cyan">Aerospace R&amp;D · ISAM</span>
+          <span class="label">Graz, Styria, Austria</span>
+        </div>
+        <h1>Human–machine systems for in‑orbit servicing <span>and modular space robotics.</span></h1>
+        <p class="hero__lead">We develop <strong>the software brain and the robotic hand</strong> for servicing satellites in orbit: a latency-compensated operator cockpit, and modular docking hardware that can capture, stabilise and free a stuck mechanism.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#system">See the system <span class="arr">→</span></a>
+          <a class="btn" href="#founder">Partner with us</a>
+        </div>
+      </div>
 
+      <figure class="hero__viz panel" aria-labelledby="sim-cap">
+        <div class="panel__head">
+          <span class="label label--fg live">MONOLITH · Predictive view</span>
+          <span class="label" id="sim-cap">Concept simulation</span>
+        </div>
+        <div class="sim" id="sim">
+          <canvas id="sim-canvas" role="img" aria-label="Simulation: a servicing craft approaches a satellite with a stowed solar panel. A dashed outline shows the delayed telemetry position, a solid outline shows the predicted real-time position."></canvas>
+        </div>
+        <div class="readouts" aria-live="off">
+          <div><span class="label">Range</span><b id="ro-range">— m</b></div>
+          <div><span class="label">Closing</span><b id="ro-rate">— m/s</b></div>
+          <div class="warn"><span class="label">Lag gap</span><b id="ro-gap">— m</b></div>
+          <div><span class="label">Model error</span><b id="ro-err">— m</b></div>
+        </div>
+        <div class="panel__foot">
+          <label class="slider label" for="lat">Latency
+            <input type="range" id="lat" min="0.2" max="4" step="0.1" value="2.0">
+            <b class="label label--fg" id="lat-v" style="min-width:38px">2.0 s</b>
+          </label>
+          <span class="legend label"><span><i class="ghost"></i>Telemetry</span><span><i></i>Predicted</span></span>
+        </div>
+      </figure>
+    </div>
+
+    <div class="facts">
+      <div class="wrap grid12">
+        <div><span class="label">Focus</span><b>In-orbit servicing, assembly &amp; manufacturing</b></div>
+        <div><span class="label">Stage</span><b>Pre-incubation · R&amp;D</b></div>
+        <div><span class="label">Base</span><b>Graz, Styria · FH JOANNEUM</b></div>
+        <div><span class="label">Next milestone</span><b>Kinetic ground prototype</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 01 PROBLEM ===================== -->
   <section class="sec" id="problem">
-    <div class="sec__bar"><span>01 / Problem</span><span>XUX // SEC-01</span></div>
-    <div class="sec__head reveal">
-      <h2>The hardware is world-class. The human interaction often isn't.</h2>
-      <p>Space teams build extraordinary systems, then hand them to people who must operate them in the worst conditions a body can work in.</p>
-    </div>
-    <div class="conditions reveal">
-      <span class="label conditions__label">Operating conditions // What the body is up against</span>
-      <div class="readout">
-        <div class="readout__cell"><span class="label"><span class="dot"></span>Suit pressure</span><b>4.3 psi</b><small>Gloved hands lose touch and tire fast</small></div>
-        <div class="readout__cell"><span class="label"><span class="dot"></span>Load</span><b>Vibration</b><small>Small targets become hard to hit</small></div>
-        <div class="readout__cell"><span class="label"><span class="dot"></span>Air</span><b>CO2 buildup</b><small>Hypercapnia slows thinking</small></div>
-        <div class="readout__cell"><span class="label"><span class="dot"></span>Time</span><b>Alarms</b><small>Seconds decide the outcome</small></div>
+    <div class="wrap">
+      <div class="grid12 sec__head reveal">
+        <div class="sec__idx"><span class="n">01</span><span class="label">The orbital bottleneck</span></div>
+        <div class="sec__title">
+          <h2>Satellites are lost to small failures. Fixing them from Earth is hard.</h2>
+          <p>Expensive spacecraft go out of service, or become debris, because one mechanism did not move. The tools to reach and repair them exist only in parts, and the people who would operate them work through a delayed link.</p>
+        </div>
       </div>
-    </div>
-    <span class="label conditions__label reveal">Two gaps show up again and again</span>
-    <div class="tiles tiles--2 reveal">
-      <div class="tile">
-        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <span class="label label--hz">Physical</span>
-        <h3>Tools built for bare hands, used in pressurised gloves</h3>
-        <p>A pressurised suit glove pushes back against every finger movement and dulls the sense of touch. Small knobs, fine triggers and precise grips cause fatigue and errors.</p>
-      </div>
-      <div class="tile">
-        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <span class="label label--hz">Digital</span>
-        <h3>Every console looks different, and stress makes it worse</h3>
-        <p>Telemetry and control screens vary by vendor and mission. Under vibration, workload and alarm noise, operators lose seconds finding the control that matters.</p>
+
+      <div class="fails reveal">
+        <article class="fail">
+          <svg viewBox="0 0 240 120" aria-hidden="true">
+            <g fill="none" stroke-width="1.2">
+              <rect class="stroke-fg" x="100" y="44" width="40" height="32"/>
+              <rect class="stroke" x="146" y="52" width="80" height="16"/>
+              <path class="stroke" d="M140 60h6M166 52v16M186 52v16M206 52v16"/>
+              <rect class="stroke-amber" x="78" y="50" width="16" height="20"/>
+              <path class="stroke-amber" d="M94 60h6"/>
+              <rect class="stroke-amber" x="14" y="52" width="64" height="16" stroke-dasharray="3 3" opacity=".55"/>
+              <path class="stroke-amber" d="M70 40 l-10 -8 M70 40 l-12 0" />
+            </g>
+            <text class="svg-text" x="14" y="92">PANEL B · STOWED</text>
+            <text class="svg-text" x="146" y="92">PANEL A · OK</text>
+          </svg>
+          <span class="label label--amber">Failure mode 01</span>
+          <h3 class="h3">Stuck mechanisms</h3>
+          <p>Jammed deployment hinges, solar arrays that never unfold, antennas that never extend. The satellite works, but it can't do its job.</p>
+          <div class="fail__kv"><span class="label">Typical cause</span><b>Minor mechanical fault</b></div>
+        </article>
+
+        <article class="fail">
+          <svg viewBox="0 0 240 120" aria-hidden="true">
+            <g fill="none" stroke-width="1.2">
+              <path class="stroke-fg" d="M10 60 h14 l6 -18 l8 36 l8 -36 l8 36 l6 -18 h14"/>
+              <path class="stroke-amber" d="M150 60 h14 l6 -18 l8 36 l8 -36 l8 36 l6 -18 h14" stroke-dasharray="3 3"/>
+              <path class="stroke" d="M84 60 H146" stroke-dasharray="2 4"/>
+              <path class="stroke" d="M140 55 l6 5 -6 5"/>
+            </g>
+            <text class="svg-text" x="10" y="100">COMMAND · T</text>
+            <text class="svg-text" x="150" y="100">ARRIVES · T+Δ</text>
+            <text class="svg-text" x="92" y="50">Δ = SECONDS</text>
+          </svg>
+          <span class="label label--amber">Failure mode 02</span>
+          <h3 class="h3">The teleoperation gap</h3>
+          <p>Ground operators see where the robot was, not where it is. Signal delay plus a dense, unfamiliar interface overloads people at the moment precision matters most.</p>
+          <div class="fail__kv"><span class="label">Risk</span><b>Collision during rendezvous</b></div>
+        </article>
+
+        <article class="fail">
+          <svg viewBox="0 0 240 120" aria-hidden="true">
+            <g fill="none" stroke-width="1.2">
+              <path class="stroke-fg" d="M20 100 L60 60 L100 70 L120 46"/>
+              <path class="stroke-fg" d="M120 46 l18 -8 M120 46 l18 8"/>
+              <circle class="stroke-fg" cx="60" cy="60" r="4"/><circle class="stroke-fg" cx="100" cy="70" r="4"/>
+              <path class="stroke-amber" d="M170 18 C 210 30, 214 90, 170 102"/>
+              <path class="stroke" d="M146 42 l12 -6 M146 50 l12 6" stroke-dasharray="2 3"/>
+            </g>
+            <text class="svg-text" x="176" y="64">SMOOTH</text>
+            <text class="svg-text" x="176" y="76">HULL</text>
+            <text class="svg-text" x="20" y="116">−40 °C ↔ +120 °C</text>
+          </svg>
+          <span class="label label--amber">Failure mode 03</span>
+          <h3 class="h3">Rigid hardware</h3>
+          <p>Conventional robotic arms are heavy and single-purpose. They struggle to grip smooth, irregular or non-cooperative surfaces through vacuum and thermal cycling.</p>
+          <div class="fail__kv"><span class="label">Constraint</span><b>Mass · volume · grip</b></div>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="sec sec--alt" id="offer">
-    <div class="sec__bar"><span>02 / Services</span><span>XUX // SEC-02</span></div>
-    <div class="sec__head reveal">
-      <h2>Three ways to work with us.</h2>
-      <p>Start where you are. Most teams begin with how they look and are understood, then move into the interfaces their operators use.</p>
-    </div>
-    <div class="tiles tiles--3 reveal">
-      <div class="tile">
-        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <span class="label">Level 01</span>
-        <h3>Signal</h3>
-        <p>A clear brand and visual language, so your engineering is understood by customers, agencies and investors.</p>
-        <ul>
-          <li>Brand audit and positioning</li>
-          <li>Identity and graphic language</li>
-          <li>Pitch, website and mission visuals</li>
-        </ul>
+  <!-- ===================== 02 SYSTEM ===================== -->
+  <section class="sec sec--alt" id="system">
+    <div class="wrap">
+      <div class="grid12 sec__head reveal">
+        <div class="sec__idx"><span class="n">02</span><span class="label">R&amp;D architecture</span></div>
+        <div class="sec__title">
+          <h2>One human–machine system, designed end to end.</h2>
+          <p>Most servicing programmes treat the operator interface and the robot as separate problems. We design them together, so the hardware reports what the operator needs and the interface commands what the hardware can safely do.</p>
+        </div>
       </div>
-      <div class="tile tile--hl">
-        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <span class="label label--hz">Level 02 · Core</span>
-        <h3>Interface / Experience</h3>
-        <p>Design and testing of what operators actually touch and experience: ground-control screens, mission tools and handheld hardware.</p>
-        <ul>
-          <li>HMI and operator UI design</li>
-          <li>Usability testing under stress</li>
-          <li>Alarm, layout and control review</li>
-        </ul>
+
+      <div class="chain reveal" id="chain" aria-label="System overview">
+        <div class="node node--ext" data-p="">
+          <span class="label">Ground</span>
+          <span class="h3">Operator</span>
+          <small>Mission control, Earth</small>
+        </div>
+        <div class="link"></div>
+        <div class="node node--wide" data-p="a">
+          <span class="label">A · Software</span>
+          <span class="h3">MONOLITH</span>
+          <small>Cockpit + predictive digital twin</small>
+        </div>
+        <div class="link link--lat"><span>DELAY</span><span class="b">Δt</span></div>
+        <div class="node" data-p="b">
+          <span class="label">B · Hardware</span>
+          <span class="h3">REMORA</span>
+          <small>Docking claw</small>
+        </div>
+        <div class="link"></div>
+        <div class="node" data-p="b c">
+          <span class="label">B · Hardware</span>
+          <span class="h3">OCTOPUS</span>
+          <small>Servicing micro-crawler</small>
+        </div>
+        <div class="link"></div>
+        <div class="node node--ext" data-p="">
+          <span class="label">Client</span>
+          <span class="h3">Satellite</span>
+          <small>Stuck panel or antenna</small>
+        </div>
       </div>
-      <div class="tile">
-        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <span class="label">Level 03 · From 2027</span>
-        <h3>Assurance</h3>
-        <p>Audits against our numbered design rules (in development), plus licensed frameworks and component kits for your team.</p>
-        <ul>
-          <li>Human-factors design audits</li>
-          <li>Licensed interface frameworks</li>
-          <li>Team training</li>
-        </ul>
+
+      <div class="reveal">
+        <div class="tabs" role="tablist" aria-label="R&amp;D pillars">
+          <button class="tab" role="tab" id="tab-a" aria-controls="pn-a" aria-selected="true" data-p="a"><span class="label">Pillar A · Software &amp; HMI</span><span class="h3">MONOLITH</span></button>
+          <button class="tab" role="tab" id="tab-b" aria-controls="pn-b" aria-selected="false" tabindex="-1" data-p="b"><span class="label">Pillar B · Orbital hardware</span><span class="h3">REMORA &amp; OCTOPUS</span></button>
+          <button class="tab" role="tab" id="tab-c" aria-controls="pn-c" aria-selected="false" tabindex="-1" data-p="c"><span class="label">Pillar C · Pipeline</span><span class="h3">Future multipliers</span></button>
+        </div>
+
+        <div class="tabpanel" role="tabpanel" id="pn-a" aria-labelledby="tab-a">
+          <div class="pillar">
+            <div class="pillar__intro">
+              <span class="label label--cyan">The software brain</span>
+              <h3 class="h3" style="margin-top:8px">A remote-operation cockpit and a software-ergonomics framework for space robotics.</h3>
+              <p>MONOLITH is where the operator works. It shows the robot where it most likely is now, not where the last telemetry packet put it, and strips the screen down to what a docking or unjamming manoeuvre actually needs.</p>
+              <span class="label tag">Origin · Master's research, FH JOANNEUM</span>
+            </div>
+            <dl class="spec">
+              <div><dt class="label">01 · Prediction</dt><dd><strong>Predictive digital twin</strong>Visualises the estimated real-time state alongside delayed telemetry, so operators act on the present.</dd></div>
+              <div><dt class="label">02 · Workload</dt><dd><strong>Cognitive load reduction</strong>Layouts, alarms and confirmations tuned for high-stakes moments, not average days.</dd></div>
+              <div><dt class="label">03 · Validation</dt><dd><strong>Ground-tested framework</strong>Measured in user studies, with analog-mission testing as the target (e.g. Austrian Space Forum).</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="tabpanel" role="tabpanel" id="pn-b" aria-labelledby="tab-b" hidden>
+          <div class="pillar">
+            <div class="pillar__intro">
+              <span class="label label--cyan">The robotic hand</span>
+              <h3 class="h3" style="margin-top:8px">Modular docking and servicing hardware that captures, stabilises and repairs.</h3>
+              <p>REMORA latches onto a malfunctioning satellite. OCTOPUS moves across its surface and carries the tool that frees a stuck mechanism. Both are designed from the start to integrate mechanically and in telemetry with Austrian propulsion platforms.</p>
+              <span class="label tag">12-month deliverable · Kinetic ground prototype</span>
+            </div>
+            <dl class="spec">
+              <div><dt class="label">REMORA</dt><dd><strong>Modular docking claw</strong>Tracking, approach and latching on the client spacecraft.</dd></div>
+              <div><dt class="label">OCTOPUS</dt><dd><strong>Servicing micro-crawler</strong>Surface mobility and a toolhead for mechanical unjamming.</dd></div>
+              <div><dt class="label">Path</dt><dd><strong>Simulation → mechatronic demonstrator</strong>From a physics-based digital twin to a 3D-printed, actuated ground prototype.</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="tabpanel" role="tabpanel" id="pn-c" aria-labelledby="tab-c" hidden>
+          <div class="pillar">
+            <div class="pillar__intro">
+              <span class="label label--cyan">R&amp;D pipeline</span>
+              <h3 class="h3" style="margin-top:8px">Research tracks that make the hardware lighter and more versatile.</h3>
+              <p>Longer-horizon work feeding the OCTOPUS toolhead. Both tracks target the same constraint: doing more with less mass, less volume and less power.</p>
+              <span class="label tag">Status · Concept research</span>
+            </div>
+            <dl class="spec">
+              <div><dt class="label">C1 · Kinematics</dt><dd><strong>Adaptive compliant toolheads</strong>One lightweight element that reshapes into several capture and tool forms, without a mechanical tool changer.</dd></div>
+              <div><dt class="label">C2 · Anchoring</dt><dd><strong>Zero-power surface grip</strong>Residue-free attachment to non-magnetic composite hulls in vacuum and cold.</dd></div>
+            </dl>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="sec" id="method">
-    <div class="sec__bar"><span>03 / Method</span><span>XUX // SEC-03</span></div>
-    <div class="sec__head reveal">
-      <h2>Numbers, not adjectives.</h2>
-      <p>Every project follows the same loop, so each design decision can be traced back to a measurement.</p>
-    </div>
-    <div class="steps reveal">
-      <div class="step"><span class="step__num">01</span><b>Observe</b><p>Watch the real task: ops room, test stand, glove box or analogue mission.</p></div>
-      <div class="step"><span class="step__num">02</span><b>Measure</b><p>Test it under controlled stress: gloves, vibration, time pressure, workload.</p></div>
-      <div class="step"><span class="step__num">03</span><b>Specify</b><p>Write a design rule with numbers, such as minimum target size at a given load.</p></div>
-      <div class="step"><span class="step__num">04</span><b>Validate</b><p>Check it with users, in research and in client pilots.</p></div>
-      <div class="step"><span class="step__num">05</span><b>Apply</b><p>Build it into your product, and into our shared rule set.</p></div>
-    </div>
-    <div class="note reveal">
-      <i class="corner tl corner--on"></i><i class="corner br corner--on"></i>
-      <b>Built on existing standards.</b> Our research builds on NASA-STD-3001 (Vol. 2, Human Factors) and ECSS-E-ST-10-11C (Human Factors Engineering), aiming to add measured rules for gloved input and high-stress screens.
-    </div>
-  </section>
-
-  <section class="sec sec--alt" id="research">
-    <div class="sec__bar"><span>04 / Research</span><span>XUX // SEC-04</span></div>
-    <div class="sec__head reveal">
-      <h2>Two research tracks, running now.</h2>
-      <p>Developed as a Master's thesis at FH JOANNEUM, Graz, in 2026. Results feed directly into our client work.</p>
-    </div>
-    <div class="spec reveal">
-      <div class="row th"><div class="label">Track</div><div class="label">Question</div><div class="label">Output</div></div>
-      <div class="row">
-        <div class="k">T1 · Physical</div>
-        <div><h4>Gloved tool affordances</h4><p>Which handle, lock and trigger shapes let a gloved hand work with the whole palm, instead of fine finger movements?</p></div>
-        <div><h4>Shape rules for hardware</h4><p>Geometries tested for task time, errors and fatigue, gloved vs. bare-handed.</p></div>
+  <!-- ===================== 03 MODEL ===================== -->
+  <section class="sec" id="model">
+    <div class="wrap">
+      <div class="grid12 sec__head reveal">
+        <div class="sec__idx"><span class="n">03</span><span class="label">Innovation model</span></div>
+        <div class="sec__title">
+          <h2>Two engines: proprietary R&amp;D, funded by a commercial runway.</h2>
+          <p>OZ Industries is a deep-tech venture, not a creative agency. Specialised engineering services bring early revenue and market contact; the core of the company is the IP and the prototypes.</p>
+        </div>
       </div>
-      <div class="row">
-        <div class="k">T2 · Digital</div>
-        <div><h4>Telemetry under load</h4><p>How should target sizes, alarm colours and navigation change when operators are shaken, rushed or tired?</p></div>
-        <div><h4>Layout rules for screens</h4><p>Fitts's-law-based sizing under vibration, isolated alarm colour paths and flat navigation.</p></div>
+      <div class="engines reveal">
+        <div class="engine engine--core">
+          <span class="label label--cyan">Engine 1 · Core focus</span>
+          <h3 class="h3">R&amp;D and proprietary IP</h3>
+          <ul>
+            <li>MONOLITH HMI framework and cockpit</li>
+            <li>REMORA / OCTOPUS kinetic docking hardware</li>
+            <li>Funded through public R&amp;D grants and incubation</li>
+            <li>Academic lab partnerships in Graz</li>
+          </ul>
+        </div>
+        <div class="engine">
+          <span class="label">Engine 2 · Commercial runway</span>
+          <h3 class="h3">Space-tech interaction engineering</h3>
+          <ul>
+            <li>Interaction architecture for NewSpace start-ups</li>
+            <li>Telemetry dashboard integration</li>
+            <li>Rapid prototyping of operator tools</li>
+            <li>Early validation and revenue</li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <section class="sec" id="about">
-    <div class="sec__bar"><span>05 / Founder</span><span>XUX // SEC-05</span></div>
-    <div class="sec__head reveal">
-      <h2>Complex interfaces, fast decisions.</h2>
-    </div>
-    <div class="founder reveal">
-      <div class="idcard">
-        <i class="corner tl corner--on"></i><i class="corner tr corner--on"></i><i class="corner bl corner--on"></i><i class="corner br corner--on"></i>
-        <div class="idcard__top"><span class="label label--hz">Founder</span><span class="label">ID // XUX-001</span></div>
-        <h3>Emrah Özbay</h3>
-        <span class="label label--fg">Product &amp; Interaction Designer</span>
-        <dl>
-          <div><dt class="label">Background</dt><dd>SaaS &amp; game UX</dd></div>
-          <div><dt class="label">Recent</dt><dd>Live-ops HUD &amp; meta systems, AAA game</dd></div>
-          <div><dt class="label">Study</dt><dd>MA Interaction Design, FH JOANNEUM</dd></div>
-          <div><dt class="label">Base</dt><dd>Graz, Austria</dd></div>
-        </dl>
-        <div class="idcard__barcode" aria-hidden="true"></div>
-      </div>
-      <div class="founder__text">
-        <p>I've spent my career designing interfaces where people make fast decisions under pressure: game HUDs, live operations tools and data-heavy SaaS products.</p>
-        <p>Recent work includes a lockout/tagout safety tool for field technicians, with slide-to-confirm actions and physical-lock steps, and a mission-control concept for orbital operations with operator approval queues and live telemetry.</p>
-        <p>Now I'm bringing that experience to space and extreme environments, where a misread screen or a missed grip has real consequences.</p>
+      <div class="loop reveal">
+        <span class="label">Engine 2 · client problems</span><span class="line"></span>
+        <span class="label label--cyan">feed</span><span class="line"></span>
+        <span class="label">Engine 1 · validated IP</span><span class="line"></span>
+        <span class="label label--cyan">strengthens</span><span class="line"></span>
+        <span class="label">Engine 2 · credibility</span>
       </div>
     </div>
   </section>
 
+  <!-- ===================== 04 ROADMAP ===================== -->
   <section class="sec sec--alt" id="roadmap">
-    <div class="sec__bar"><span>06 / Roadmap</span><span>XUX // SEC-06</span></div>
-    <div class="sec__head reveal">
-      <h2>Where we are.</h2>
-    </div>
-    <div class="road reveal">
-      <div class="ph ph--now"><span class="label label--hz">Now · 2026</span><h3>Research</h3><p>Thesis research at FH JOANNEUM. Building methods and talking with space teams about their real problems.</p></div>
-      <div class="ph"><span class="label">2026 – 2027</span><h3>First projects</h3><p>Pilot design and testing work with early partners. Applying for ESA BIC Austria and national innovation funding.</p></div>
-      <div class="ph"><span class="label">Q1 2027</span><h3>Company launch</h3><p>Incorporation in Styria. Design services, human-factors audits and licensed frameworks.</p></div>
+    <div class="wrap">
+      <div class="grid12 sec__head reveal">
+        <div class="sec__idx"><span class="n">04</span><span class="label">R&amp;D roadmap · 2026–2028</span></div>
+        <div class="sec__title">
+          <h2>From research to a working ground prototype in twelve months.</h2>
+        </div>
+      </div>
+
+      <div class="phases reveal">
+        <div class="phase phase--now">
+          <span class="label label--cyan">Phase 1 · Late 2026 – Q1 2027 · Now</span>
+          <h3 class="h3">Foundations</h3>
+          <ul>
+            <li>Master's research on extreme-environment software ergonomics</li>
+            <li>Ecosystem ties: Science Park Graz, Aerospace Team Graz, aws</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <span class="label">Phase 2 · Q2 2027 – Q1 2028</span>
+          <h3 class="h3">Ground prototyping</h3>
+          <ul>
+            <li>Operational launch in Styria, April 2027</li>
+            <li>12-month R&amp;D sprint (below)</li>
+            <li>Engineering co-founding team in Graz</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <span class="label">Phase 3 · 2028+</span>
+          <h3 class="h3">Acceleration &amp; qualification</h3>
+          <ul>
+            <li>ESA BIC Austria and aws Preseed Deep Tech</li>
+            <li>From ground demonstrators to space-grade testing</li>
+            <li>In-orbit demonstration as the long-term goal</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gantt reveal" role="table" aria-label="Planned 12-month R&amp;D sprint">
+        <div class="gantt__head">
+          <span class="label label--fg">12-month R&amp;D sprint · Phase 2</span>
+          <span class="label">Plan · Apr 2027 – Mar 2028</span>
+        </div>
+        <div class="grow grow--months" role="row">
+          <div class="gl" role="columnheader"><small>Workstream</small></div>
+          <div>M1</div><div>M2</div><div>M3</div><div>M4</div><div>M5</div><div>M6</div><div>M7</div><div>M8</div><div>M9</div><div>M10</div><div>M11</div><div>M12</div>
+        </div>
+        <!-- bars are placed by data-s (start month) / data-e (end month) -->
+        <div class="grow" role="row"><div class="gl" role="cell">Digital twin simulation<small>Physics model · orbit + contact</small></div><div class="gtrack"><div class="bar" data-s="1" data-e="5"></div><div class="ms" data-m="5" title="Milestone: validated simulation"></div></div></div>
+        <div class="grow" role="row"><div class="gl" role="cell">MONOLITH teleoperation UI<small>Predictive view · workload design</small></div><div class="gtrack"><div class="bar" data-s="3" data-e="9"></div></div></div>
+        <div class="grow" role="row"><div class="gl" role="cell">REMORA claw prototype<small>3D-printed · actuated</small></div><div class="gtrack"><div class="bar bar--hw" data-s="5" data-e="11"></div></div></div>
+        <div class="grow" role="row"><div class="gl" role="cell">Operator studies<small>Latency · load · error rate</small></div><div class="gtrack"><div class="bar bar--test" data-s="7" data-e="12"></div></div></div>
+        <div class="grow" role="row"><div class="gl" role="cell">Integrated ground demo<small>Track · latch · unjam</small></div><div class="gtrack"><div class="bar bar--hw" data-s="10" data-e="12"></div><div class="ms" data-m="12" title="Milestone: kinetic ground prototype demo"></div></div></div>
+        <div class="gantt__foot">
+          <span class="key label"><i></i>Software</span>
+          <span class="key label"><i class="hw"></i>Hardware</span>
+          <span class="key label"><i class="test"></i>Validation</span>
+          <span class="key label"><i class="ms"></i>Milestone</span>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="sec contact" id="contact">
-    <div class="sec__bar"><span>07 / Contact</span><span>XUX // SEC-07</span></div>
-    <h2>Building something people operate under <span style="color:var(--hazard)">pressure?</span></h2>
-    <p class="contact__lead">I'm looking for early partners: teams with an operator screen, a ground tool or a piece of hardware that has to work in hard conditions. Let's talk.</p>
-    <div class="links">
-      <a class="tile" href="mailto:emrah.oezbay@edu.fh-joanneum.at">
-        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <span class="label">Email // FH JOANNEUM</span><span class="v">emrah.oezbay@edu.fh-joanneum.at</span>
-      </a>
-      <a class="tile" href="https://www.linkedin.com/in/ozbayemrah" target="_blank" rel="noopener">
-        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <span class="label">LinkedIn</span><span class="v">in/ozbayemrah</span>
-      </a>
+  <!-- ===================== 05 ECOSYSTEM ===================== -->
+  <section class="sec" id="ecosystem">
+    <div class="wrap">
+      <div class="grid12 sec__head reveal">
+        <div class="sec__idx"><span class="n">05</span><span class="label">Ecosystem &amp; academic roots</span></div>
+        <div class="sec__title">
+          <h2>Built in Styria, for the Austrian space cluster.</h2>
+          <p>Graz combines aerospace engineering, interaction-design research and a growing NewSpace scene. OZ Industries is designed to plug into it from day one.</p>
+        </div>
+      </div>
+      <div class="grid12">
+        <div class="body reveal">
+          <div class="eco">
+            <div class="eco__row"><span class="h3">FH JOANNEUM</span><p>Research home. Master's in Interaction Design, origin of the MONOLITH research.</p><span class="label status status--active">Active</span></div>
+            <div class="eco__row"><span class="h3">aws · Austria Wirtschaftsservice</span><p>First Incubator, later Preseed Deep Tech.</p><span class="label status status--applying">Applying</span></div>
+            <div class="eco__row"><span class="h3">Science Park Graz · ESA BIC Austria</span><p>Incubation and space-business acceleration.</p><span class="label status status--applying">Applying</span></div>
+            <div class="eco__row"><span class="h3">TU Graz · Aerospace Team Graz</span><p>Engineering collaboration, mechatronics, lab access.</p><span class="label status">Target</span></div>
+            <div class="eco__row"><span class="h3">Austrian Space Forum (ÖWF)</span><p>Analog-mission testing of the operator interface.</p><span class="label status">Target</span></div>
+            <div class="eco__row"><span class="h3">Austrian propulsion platforms</span><p>Mechanical and telemetry compatibility for the docking hardware.</p><span class="label status">Design target</span></div>
+          </div>
+          <p class="label eco__note">Status as of November 2026. "Target" means a planned collaboration, not an existing agreement.</p>
+        </div>
+      </div>
     </div>
+  </section>
 
+  <!-- ===================== 06 FOUNDER ===================== -->
+  <section class="sec sec--alt" id="founder">
+    <div class="wrap">
+      <div class="grid12 sec__head reveal">
+        <div class="sec__idx"><span class="n">06</span><span class="label">Founder &amp; collaboration</span></div>
+        <div class="sec__title">
+          <h2>Fifteen years of interfaces for complex decisions, now pointed at orbit.</h2>
+        </div>
+      </div>
+
+      <div class="founder reveal">
+        <div class="idcard">
+          <div class="idcard__top"><span class="label label--cyan">Founder</span><span class="label">OZ-001</span></div>
+          <div class="idcard__body">
+            <div>
+              <h3>Emrah Özbay, BA</h3>
+              <p class="label label--fg role">Senior Product &amp; Interaction Designer</p>
+            </div>
+            <div class="qr" data-vcard-qr role="img" aria-label="QR code: save Emrah Özbay's contact card"></div>
+          </div>
+          <dl>
+            <div><dt class="label">Experience</dt><dd>15+ years, complex B2B interfaces</dd></div>
+            <div><dt class="label">Research</dt><dd>MA Interaction Design, FH JOANNEUM</dd></div>
+            <div><dt class="label">Base</dt><dd>Graz, Styria</dd></div>
+          </dl>
+          <div class="idcard__actions">
+            <a class="btn btn--sm" data-vcard-download href="#founder" download="Emrah-Ozbay.vcf">Save contact</a>
+            <a class="btn btn--sm" href="https://www.linkedin.com/in/ozbayemrah" target="_blank" rel="noopener">LinkedIn <span class="arr">↗</span></a>
+          </div>
+        </div>
+        <div class="founder__text">
+          <p>I design interfaces for people who make fast decisions with a lot at stake: operations tools, data-heavy B2B platforms and real-time HUDs.</p>
+          <p>OZ Industries applies that discipline to the hardest operator problem I know: controlling a robot thousands of kilometres away, through a delayed link, next to a satellite worth millions.</p>
+          <p>The company is built to grow beyond design. I'm looking for engineering co-founders in robotics and mechatronics to build the hardware side with me in Graz.</p>
+        </div>
+      </div>
+
+      <div class="calls reveal">
+        <a class="call" href="mailto:emrah.oezbay@edu.fh-joanneum.at?subject=OZ%20Industries%20%E2%80%94%20R%26D%20partnership">
+          <span class="label label--cyan">R&amp;D partners</span>
+          <h3 class="h3">Labs, research teams and space companies</h3>
+          <p>Joint research, test facilities, or a servicing problem we can prototype against.</p>
+          <span class="go"><span class="label">Start a conversation</span><span class="label">→</span></span>
+        </a>
+        <a class="call" href="mailto:emrah.oezbay@edu.fh-joanneum.at?subject=OZ%20Industries%20%E2%80%94%20Engineering%20co-founder">
+          <span class="label label--cyan">Co-founders</span>
+          <h3 class="h3">Aerospace and mechatronics engineers</h3>
+          <p>Own the REMORA / OCTOPUS hardware track from simulation to prototype.</p>
+          <span class="go"><span class="label">Get in touch</span><span class="label">→</span></span>
+        </a>
+        <a class="call" href="mailto:emrah.oezbay@edu.fh-joanneum.at?subject=OZ%20Industries%20%E2%80%94%20Briefing%20request">
+          <span class="label label--cyan">Evaluators &amp; programmes</span>
+          <h3 class="h3">Grant and incubation reviewers</h3>
+          <p>Request a technical briefing or the full R&amp;D plan.</p>
+          <span class="go"><span class="label">Request briefing</span><span class="label">→</span></span>
+        </a>
+      </div>
+    </div>
   </section>
 
 </main>
 
 <footer class="site">
-  <div class="footer__top">
-    <div class="footer__wordmark">XUX<span>.</span> Studio</div>
-    <nav class="footer__links">
-      <a href="work-system.html">Work system</a>
+  <div class="wrap ftr">
+    <span class="label">© <span id="yr">2026</span> OZ Industries GmbH (in formation) · Graz, Styria, Austria</span>
+    <nav class="label">
+      <a href="work-system.html">Briefing deck</a>
       <a href="https://www.linkedin.com/in/ozbayemrah" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="mailto:emrah.oezbay@edu.fh-joanneum.at">Email (FH JOANNEUM)</a>
+      <a href="mailto:emrah.oezbay@edu.fh-joanneum.at">Email</a>
+      <span>Rev C · 2026</span>
     </nav>
-  </div>
-  <div class="footer__bottom">
-    <span>© <span id="footer-year">2026</span> XUX Studio · Graz, Styria, Austria</span>
-    <span>Rev B · 2026</span>
   </div>
 </footer>
 
 <script src="assets/vendor/qrcode.min.js"></script>
 <script src="assets/vcard.js"></script>
 <script>
-  document.getElementById("footer-year").textContent = new Date().getFullYear();
+(function () {
+  var root = document.documentElement;
+  document.getElementById("yr").textContent = new Date().getFullYear();
 
-  /* fit the hero contact card to the hero's height: the grid stretches
-     the card to the text column's height, then the card is widened so
-     the square QR uses all the height left after head/hint/button. */
-  (function () {
-    var card = document.querySelector(".vcard");
-    var qr = document.getElementById("vcard-qr");
-    var main = document.querySelector(".hero__main");
-    if (!card || !qr || !main) return;
-    var stacked = window.matchMedia("(max-width: 900px)");
-    var MIN = 268, MAX = 520;
-    function fit() {
-      if (stacked.matches) { card.style.width = ""; return; }
-      var cs = getComputedStyle(card);
-      var padX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
-      var padY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
-      var gap = parseFloat(cs.rowGap) || 0;
-      var others = 0, n = 0;
-      Array.prototype.forEach.call(card.children, function (el) {
-        if (el === qr || el.classList.contains("corner")) return;
-        others += el.offsetHeight; n++;
-      });
-      var qrH = main.offsetHeight - padY - others - gap * n;
-      card.style.width = Math.max(MIN, Math.min(MAX, qrH + padX)) + "px";
-    }
-    fit();
-    if ("ResizeObserver" in window) new ResizeObserver(fit).observe(main);
-    else window.addEventListener("resize", fit);
-    if (document.fonts) document.fonts.ready.then(fit);
-  })();
+  /* ---------- theme (dark primary) ---------- */
+  var themeBtn = document.getElementById("theme");
+  var themeListeners = [];
+  function isLight() { return root.getAttribute("data-theme") === "light"; }
+  function syncTheme() {
+    themeBtn.setAttribute("aria-pressed", String(isLight()));
+    themeBtn.setAttribute("aria-label", isLight() ? "Switch to dark theme" : "Switch to light theme");
+    themeListeners.forEach(function (f) { f(); });
+  }
+  themeBtn.addEventListener("click", function () {
+    if (isLight()) root.removeAttribute("data-theme"); else root.setAttribute("data-theme", "light");
+    try { localStorage.setItem("theme", isLight() ? "light" : "dark"); } catch (e) {}
+    syncTheme();
+  });
+  syncTheme();
 
-  /* theme toggle — same behaviour/storage key as the portfolio */
-  (function () {
-    var root = document.documentElement;
-    var btn = document.querySelector(".theme-toggle");
-    function isLight() { return root.getAttribute("data-theme") === "light"; }
-    function update() {
-      btn.setAttribute("aria-pressed", String(isLight()));
-      btn.setAttribute("aria-label", isLight() ? "Switch to dark theme" : "Switch to light theme");
-    }
-    update();
-    btn.addEventListener("click", function () {
-      var light = !isLight();
-      if (light) root.setAttribute("data-theme", "light"); else root.removeAttribute("data-theme");
-      try { localStorage.setItem("theme", light ? "light" : "dark"); } catch (e) {}
-      update();
-    });
-  })();
+  /* ---------- UTC clock ---------- */
+  var utc = document.getElementById("utc");
+  function tick() { utc.textContent = new Date().toISOString().slice(11, 19); }
+  tick(); setInterval(tick, 1000);
 
-  /* live clock: Vienna + visitor's local time */
-  (function () {
-    var T = { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false };
-    var D = { weekday: "long", month: "short", day: "2-digit", year: "numeric" };
-    function offset(d) {
-      try {
-        var p = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Vienna", timeZoneName: "shortOffset" }).formatToParts(d);
-        var z = p.find(function (x) { return x.type === "timeZoneName"; });
-        return z ? z.value : "GMT";
-      } catch (e) { return "GMT"; }
-    }
-    function set(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; }
-    function tick() {
-      var now = new Date();
-      set("clock-zone-vienna", offset(now));
-      set("clock-time", now.toLocaleTimeString("en-GB", Object.assign({ timeZone: "Europe/Vienna" }, T)));
-      set("clock-date", now.toLocaleDateString("en-GB", Object.assign({ timeZone: "Europe/Vienna" }, D)).toUpperCase());
-      set("clock-time-local", now.toLocaleTimeString("en-GB", T));
-      set("clock-date-local", now.toLocaleDateString("en-GB", D).toUpperCase());
-    }
-    tick();
-    setInterval(tick, 1000);
-  })();
-
-  /* scroll reveal */
-  (function () {
-    var els = document.querySelectorAll(".reveal");
-    if (!("IntersectionObserver" in window)) { els.forEach(function (e) { e.classList.add("in"); }); return; }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
-    }, { threshold: 0.12 });
+  /* ---------- reveal ---------- */
+  var els = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
     els.forEach(function (e) { io.observe(e); });
-  })();
+  } else els.forEach(function (e) { e.classList.add("in"); });
+
+  /* ---------- pillar tabs + chain highlight ---------- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  var nodes = document.querySelectorAll("#chain .node");
+  function select(tab, focus) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+    var p = tab.getAttribute("data-p");
+    nodes.forEach(function (n) { n.classList.toggle("on", (" " + n.getAttribute("data-p") + " ").indexOf(" " + p + " ") > -1); });
+    if (focus) tab.focus();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { select(t); });
+    t.addEventListener("keydown", function (e) {
+      var k = e.key, j = null;
+      if (k === "ArrowRight" || k === "ArrowDown") j = (i + 1) % tabs.length;
+      if (k === "ArrowLeft" || k === "ArrowUp") j = (i - 1 + tabs.length) % tabs.length;
+      if (k === "Home") j = 0;
+      if (k === "End") j = tabs.length - 1;
+      if (j !== null) { e.preventDefault(); select(tabs[j], true); }
+    });
+  });
+  nodes.forEach(function (n) {
+    var p = (n.getAttribute("data-p") || "").split(" ")[0];
+    if (!p) return;
+    n.style.cursor = "pointer";
+    n.addEventListener("click", function () { select(document.querySelector('.tab[data-p="' + p + '"]')); });
+  });
+  select(tabs[0]);
+
+  /* ---------- gantt placement ---------- */
+  /* on narrow screens the track is its own 12-col grid → shift by one (no label column) */
+  var narrow = window.matchMedia("(max-width: 900px)");
+  function placeGantt() {
+    var off = narrow.matches ? 0 : 1;
+    document.querySelectorAll(".gantt .bar").forEach(function (b) {
+      b.style.gridColumn = (+b.dataset.s + off) + " / " + (+b.dataset.e + off + 1);
+      b.style.gridRow = "1";
+    });
+    document.querySelectorAll(".gantt .ms").forEach(function (m) {
+      m.style.gridColumn = (+m.dataset.m + off) + " / span 1";
+      m.style.gridRow = "1";
+    });
+  }
+  placeGantt();
+  if (narrow.addEventListener) narrow.addEventListener("change", placeGantt);
+
+  /* ---------- MONOLITH predictive-view simulation ----------
+     A servicer rehearses an approach on a client satellite with a
+     stowed panel. Telemetry arrives L seconds late (dashed ghost);
+     the predictive model shows the estimated present (solid). */
+  var wrap = document.getElementById("sim");
+  var cv = document.getElementById("sim-canvas");
+  var ctx = cv.getContext("2d");
+  var lat = document.getElementById("lat"), latV = document.getElementById("lat-v");
+  var ro = { range: document.getElementById("ro-range"), rate: document.getElementById("ro-rate"), gap: document.getElementById("ro-gap"), err: document.getElementById("ro-err") };
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var C = {};
+  function readColors() {
+    var s = getComputedStyle(root);
+    ["--cyan", "--amber", "--fg", "--muted", "--dim", "--line", "--line-2", "--bg-1"].forEach(function (k) { C[k] = s.getPropertyValue(k).trim(); });
+  }
+  readColors();
+  themeListeners.push(function () { readColors(); if (!running) draw(simT); });
+
+  var W = 0, H = 0, dpr = 1;
+  function resize() {
+    var r = wrap.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (!running) draw(simT);
+  }
+
+  var PERIOD = 28;
+  function radius(t) { var u = (t % PERIOD) / PERIOD; return 5 + 15 * (0.5 + 0.5 * Math.cos(2 * Math.PI * u)); }
+  function pos(t) {
+    var r = radius(t), th = -2.45 + 0.55 * Math.sin(2 * Math.PI * t / 41) + 0.25 * Math.sin(2 * Math.PI * t / 13);
+    return { x: r * Math.cos(th), y: r * Math.sin(th), r: r };
+  }
+  function L() { return parseFloat(lat.value); }
+
+  function draw(t) {
+    var cx = W * 0.54, cy = H * 0.53, s = Math.min(W, H) / 2 / 22.5;
+    var lag = L();
+    ctx.clearRect(0, 0, W, H);
+
+    /* range rings + crosshair */
+    ctx.lineWidth = 1;
+    ctx.font = "10px 'JetBrains Mono', monospace";
+    [5, 10, 20].forEach(function (m) {
+      ctx.strokeStyle = C["--line-2"];
+      ctx.setLineDash(m === 20 ? [] : [2, 4]);
+      ctx.beginPath(); ctx.arc(cx, cy, m * s, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = C["--dim"];
+      ctx.fillText(m + " m", cx + m * s * 0.71 + 4, cy + m * s * 0.71 + 12);
+    });
+    ctx.setLineDash([]);
+    ctx.strokeStyle = C["--line"];
+    ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(W, cy); ctx.moveTo(cx, 0); ctx.lineTo(cx, H); ctx.stroke();
+
+    /* client satellite (slow tumble) */
+    var a = t * 0.11;
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(a);
+    var b = 2.2 * s;
+    ctx.strokeStyle = C["--fg"]; ctx.lineWidth = 1.3;
+    ctx.strokeRect(-b / 2, -b / 2, b, b);
+    ctx.strokeStyle = C["--muted"];
+    ctx.strokeRect(b / 2 + 0.35 * s, -0.5 * s, 5.2 * s, 1.0 * s);
+    ctx.beginPath(); ctx.moveTo(b / 2, 0); ctx.lineTo(b / 2 + 0.35 * s, 0);
+    for (var k = 1; k < 4; k++) { var px = b / 2 + 0.35 * s + k * 1.3 * s; ctx.moveTo(px, -0.5 * s); ctx.lineTo(px, 0.5 * s); }
+    ctx.stroke();
+    ctx.strokeStyle = C["--amber"];
+    ctx.strokeRect(-b / 2 - 1.15 * s, -0.6 * s, 0.8 * s, 1.2 * s);
+    ctx.beginPath(); ctx.moveTo(-b / 2, 0); ctx.lineTo(-b / 2 - 0.35 * s, 0); ctx.stroke();
+    ctx.setLineDash([3, 3]); ctx.globalAlpha = 0.4;
+    ctx.strokeRect(-b / 2 - 0.35 * s - 5.2 * s, -0.5 * s, 5.2 * s, 1.0 * s);
+    ctx.setLineDash([]); ctx.globalAlpha = 1;
+    ctx.restore();
+    var lx = cx + Math.cos(a + Math.PI) * 3.6 * s, ly = cy + Math.sin(a + Math.PI) * 3.6 * s;
+    ctx.fillStyle = C["--amber"];
+    ctx.fillText("PANEL B · STOWED", Math.max(6, Math.min(W - 110, lx - 50)), Math.max(14, ly + (ly < cy ? -10 : 18)));
+
+    /* telemetry trail (what the ground actually received) */
+    ctx.fillStyle = C["--muted"];
+    for (var i = 1; i <= 16; i++) {
+      var q = pos(t - lag - i * 0.35);
+      ctx.globalAlpha = 0.5 * (1 - i / 17);
+      ctx.fillRect(cx + q.x * s - 1, cy + q.y * s - 1, 2, 2);
+    }
+    ctx.globalAlpha = 1;
+
+    var now = pos(t), old = pos(t - lag);
+    var ex = 0.05 * lag * lag * Math.sin(t * 1.3), ey = 0.05 * lag * lag * Math.cos(t * 1.7);
+    var pr = { x: now.x + ex, y: now.y + ey };
+
+    function craft(p, ghost) {
+      var x = cx + p.x * s, y = cy + p.y * s, ang = Math.atan2(-p.y, -p.x), w = 1.5 * s;
+      ctx.save(); ctx.translate(x, y); ctx.rotate(ang);
+      ctx.lineWidth = 1.4;
+      ctx.strokeStyle = ghost ? C["--muted"] : C["--cyan"];
+      if (ghost) ctx.setLineDash([3, 3]);
+      ctx.strokeRect(-w / 2, -w / 2, w, w);
+      ctx.beginPath();
+      ctx.moveTo(w / 2, -w / 3); ctx.lineTo(w / 2 + w * 0.6, -w / 2.2);
+      ctx.moveTo(w / 2, w / 3); ctx.lineTo(w / 2 + w * 0.6, w / 2.2);
+      ctx.stroke();
+      ctx.restore();
+      return { x: x, y: y };
+    }
+    var g = craft(old, true), c = craft(pr, false);
+
+    /* gap between telemetry and prediction */
+    ctx.strokeStyle = C["--amber"]; ctx.lineWidth = 1; ctx.setLineDash([2, 3]);
+    ctx.beginPath(); ctx.moveTo(g.x, g.y); ctx.lineTo(c.x, c.y); ctx.stroke(); ctx.setLineDash([]);
+
+    /* labels sit on opposite sides of the approach line so they never collide */
+    var dx = c.x - cx, dy = c.y - cy, dl = Math.hypot(dx, dy) || 1, nx = -dy / dl, ny = dx / dl;
+    if (nx < 0) { nx = -nx; ny = -ny; }
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = C["--cyan"]; ctx.textAlign = "left";
+    ctx.fillText("PREDICTED", c.x + nx * 22, c.y + ny * 22);
+    ctx.fillStyle = C["--muted"]; ctx.textAlign = "right";
+    ctx.fillText("TELEMETRY T−" + lag.toFixed(1) + "s", g.x - nx * 22, g.y - ny * 22);
+    ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+
+    /* readouts */
+    var r1 = pos(t + 0.05).r, rate = (r1 - now.r) / 0.05;
+    ro.range.textContent = now.r.toFixed(1) + " m";
+    ro.rate.textContent = (rate <= 0 ? "−" : "+") + Math.abs(rate).toFixed(2) + " m/s";
+    ro.gap.textContent = Math.hypot(now.x - old.x, now.y - old.y).toFixed(2) + " m";
+    ro.err.textContent = "±" + Math.hypot(ex, ey).toFixed(2) + " m";
+  }
+
+  var simT = 9, last = null, running = false, visible = true, raf = 0;
+  function frame(ts) {
+    if (last !== null) simT += Math.min(0.05, (ts - last) / 1000);
+    last = ts;
+    draw(simT);
+    raf = requestAnimationFrame(frame);
+  }
+  function start() { if (running || reduce) return; running = true; last = null; raf = requestAnimationFrame(frame); }
+  function stop() { running = false; cancelAnimationFrame(raf); }
+
+  lat.addEventListener("input", function () { latV.textContent = L().toFixed(1) + " s"; if (!running) draw(simT); });
+  if ("ResizeObserver" in window) new ResizeObserver(resize).observe(wrap); else window.addEventListener("resize", resize);
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (en) { visible = en[0].isIntersecting; visible && !document.hidden ? start() : stop(); }).observe(wrap);
+  }
+  document.addEventListener("visibilitychange", function () { document.hidden ? stop() : (visible && start()); });
+  if (document.fonts) document.fonts.ready.then(function () { if (!running) draw(simT); });
+  resize();
+  start();
+})();
 </script>
 </body>
 </html>

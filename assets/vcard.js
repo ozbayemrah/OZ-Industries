@@ -5,12 +5,12 @@
 var CONTACT = {
   first: "Emrah",
   last: "Özbay",
-  org: "XUX Studio (working name)",
+  org: "OZ Industries GmbH (in formation)",
   title: "Founder · Product & Interaction Designer",
   workEmail: "emrah.oezbay@edu.fh-joanneum.at",   // listed first / preferred
   personalEmail: "ozbayemrah.design@gmail.com",
   workPhone: "+436767717175",
-  website: "https://ozbayemrah.github.io/XUX/",   // main URL
+  website: "https://ozbayemrah.github.io/oz-industries/",   // main URL
   linkedin: "https://www.linkedin.com/in/ozbayemrah",
   city: "Graz",
   region: "Styria",
