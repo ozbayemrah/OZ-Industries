@@ -10,7 +10,7 @@ var CONTACT = {
   workEmail: "emrah.oezbay@edu.fh-joanneum.at",   // listed first / preferred
   personalEmail: "ozbayemrah.design@gmail.com",
   workPhone: "+436767717175",
-  website: "https://ozbayemrah.github.io/oz-industries/",   // main URL
+  website: "https://ozbayemrah.github.io/OZ-Industries/",   // main URL
   linkedin: "https://www.linkedin.com/in/ozbayemrah",
   city: "Graz",
   region: "Styria",
