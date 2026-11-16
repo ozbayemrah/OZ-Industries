@@ -10,10 +10,6 @@
 <meta name="theme-color" content="#0B0E14">
 
 <link rel="stylesheet" href="assets/fonts/fonts.css">
-<script>
-  /* dark is the primary theme; light only when chosen (shared key with the portfolio) */
-  try { if (localStorage.getItem("theme") === "light") document.documentElement.setAttribute("data-theme", "light"); } catch (e) {}
-</script>
 <style>
   /* =========================================================
      OZ Industries — "MONOLITH grid"
@@ -41,23 +37,6 @@
     --display: "Space Grotesk", system-ui, sans-serif;
     --gutter: clamp(16px, 2.2vw, 28px);
     --max: 1320px;
-  }
-  :root[data-theme="light"] {
-    --bg: #F4F6F8;
-    --bg-1: #ECEFF3;
-    --bg-2: #E2E6EC;
-    --fg: #0B0E14;
-    --muted: #4E5866;
-    --dim: #7A8494;
-    --line: rgba(11, 14, 20, 0.09);
-    --line-2: rgba(11, 14, 20, 0.18);
-    --cyan: #00B8CC;
-    --cyan-ink: #00728A;
-    --cyan-dim: rgba(0, 140, 165, 0.10);
-    --amber: #E07A00;
-    --amber-ink: #A35400;
-    --amber-dim: rgba(224, 122, 0, 0.12);
-    --on-cyan: #F4F6F8;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -119,18 +98,6 @@
   .hdr__right { margin-left: auto; display: flex; align-items: center; gap: 18px; }
   .utc { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
   .utc b { color: var(--fg); font-weight: 400; }
-  .icon-btn {
-    display: inline-grid; place-items: center;
-    width: 32px; height: 32px;
-    border: 1px solid var(--line-2);
-    background: transparent;
-    cursor: pointer;
-    transition: border-color .15s, color .15s;
-  }
-  .icon-btn:hover { border-color: var(--cyan); color: var(--cyan-ink); }
-  .icon-btn .moon { display: none; }
-  :root[data-theme="light"] .icon-btn .sun { display: none; }
-  :root[data-theme="light"] .icon-btn .moon { display: block; }
 
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
@@ -155,7 +122,6 @@
 
   @media (max-width: 1080px) { .utc { display: none; } }
   @media (max-width: 900px) { .nav { display: none; } }
-  @media (max-width: 420px) { .hdr__deck { display: none; } }
 
   /* ---------- formation note ---------- */
   .formation { border-bottom: 1px solid var(--line); background: var(--bg-1); }
@@ -221,6 +187,40 @@
   .legend { display: flex; gap: 14px; }
   .legend i { display: inline-block; width: 14px; height: 0; border-top: 2px solid var(--cyan); vertical-align: middle; margin-right: 6px; }
   .legend i.ghost { border-top: 2px dashed var(--muted); }
+  .sim__status { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: baseline; padding: 10px 14px 8px; border-top: 1px solid var(--line); }
+  .sim__status b { font-family: var(--mono); font-weight: 400; font-size: 12px; letter-spacing: .04em; color: var(--fg); }
+  .sim__status .label { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .phasebar { list-style: none; display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding: 0 14px 12px; }
+  .phasebar li { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .phasebar li::before { content: ""; height: 2px; background: var(--line-2); }
+  .phasebar i { display: block; height: 2px; margin-top: -8px; background: var(--cyan); transform-origin: left; transform: scaleX(0); }
+  .phasebar span { font-family: var(--mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color .2s; }
+  .phasebar li.on span { color: var(--cyan-ink); }
+  .phasebar li.done span { color: var(--muted); }
+  .sim__head-r { display: inline-flex; align-items: center; gap: 12px; }
+  .panel__head { padding-top: 7px; padding-bottom: 7px; }
+  .btn--ghost { padding: 6px 10px; border-color: var(--line-2); }
+  .btn--ghost:hover { border-color: var(--cyan); color: var(--cyan-ink); }
+
+  /* ---------- capture & hold (gecko grip) ---------- */
+  .grip { margin-top: clamp(64px, 8vw, 112px); padding-top: clamp(40px, 5vw, 64px); border-top: 1px solid var(--line-2); }
+  .grip__head { row-gap: 18px; margin-bottom: clamp(28px, 3.5vw, 44px); }
+  .grip__head h3 { font-weight: 500; font-size: clamp(26px, 2.8vw, 38px); line-height: 1.1; letter-spacing: -0.02em; max-width: 24ch; }
+  .grip__head p { color: var(--muted); font-size: 17px; max-width: 62ch; margin-top: 16px; }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line-2); background: var(--bg); }
+  .step { padding: 22px 20px 24px; border-left: 1px solid var(--line-2); display: flex; flex-direction: column; gap: 10px; }
+  .step:first-child { border-left: 0; }
+  .step svg { width: 100%; height: auto; aspect-ratio: 240 / 132; display: block; margin-bottom: 8px; }
+  .step .h3 { font-size: 19px; }
+  .step p { color: var(--muted); font-size: 14.5px; }
+  .fill-cyan { fill: var(--cyan); }
+  .fill-bg { fill: var(--bg); }
+  .svg-text--cyan { fill: var(--cyan); }
+  .gripspec { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line-2); border-top: 0; }
+  .gripspec div { padding: 14px 20px; border-left: 1px solid var(--line); }
+  .gripspec div:first-child { border-left: 0; }
+  .gripspec b { display: block; font-weight: 500; font-size: 15px; margin-top: 4px; }
+  .grip__note { margin-top: 14px; }
 
   .facts { border-top: 1px solid var(--line); }
   .facts .grid12 > div { grid-column: span 3; padding: 18px 0; border-left: 1px solid var(--line); padding-left: 16px; }
@@ -462,6 +462,11 @@
     .status { justify-self: start; }
     .founder { grid-template-columns: 1fr; }
     .calls { grid-template-columns: 1fr; }
+    .steps, .gripspec { grid-template-columns: 1fr 1fr; }
+    .step:nth-child(3) { border-left: 0; }
+    .step:nth-child(n+3) { border-top: 1px solid var(--line-2); }
+    .gripspec div:nth-child(3) { border-left: 0; }
+    .gripspec div:nth-child(n+3) { border-top: 1px solid var(--line); }
   }
   @media (min-width: 901px) { .gtrack { display: contents; } }
   @media (max-width: 560px) {
@@ -473,6 +478,18 @@
     .spec > div { grid-template-columns: 1fr; gap: 4px; }
     .idcard__body { grid-template-columns: 1fr 96px; }
     .hero__actions .btn { flex: 1; }
+    .steps, .gripspec { grid-template-columns: 1fr; }
+    .step, .step:nth-child(3) { border-left: 0; border-top: 1px solid var(--line-2); }
+    .step:first-child { border-top: 0; }
+    .gripspec div, .gripspec div:nth-child(3) { border-left: 0; border-top: 1px solid var(--line); }
+    .gripspec div:first-child { border-top: 0; }
+    .phasebar span, #sim-cap { display: none; }
+    .phasebar i { margin-top: 0; }
+    .phasebar li { gap: 0; }
+    .phasebar li::before { display: none; }
+    .phasebar li { background: var(--line-2); }
+    .sim__status { grid-template-columns: 1fr auto; }
+    .sim__status b { grid-column: 1 / -1; grid-row: 2; }
   }
 </style>
 </head>
@@ -491,11 +508,7 @@
     </nav>
     <div class="hdr__right">
       <span class="utc">GRAZ 47.07°N 15.44°E · UTC <b id="utc">--:--:--</b></span>
-      <a class="btn btn--sm hdr__deck" href="work-system.html">Briefing deck <span class="arr">→</span></a>
-      <button class="icon-btn" id="theme" type="button" aria-label="Switch to light theme" aria-pressed="false">
-        <svg class="sun" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.4 4.4l2.1 2.1M17.5 17.5l2.1 2.1M4.4 19.6l2.1-2.1M17.5 6.5l2.1-2.1"/></g></svg>
-        <svg class="moon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-      </button>
+      <a class="btn btn--sm btn--primary" href="#founder">Contact <span class="arr">→</span></a>
     </div>
   </div>
 </header>
@@ -527,17 +540,31 @@
 
       <figure class="hero__viz panel" aria-labelledby="sim-cap">
         <div class="panel__head">
-          <span class="label label--fg live">MONOLITH · Predictive view</span>
-          <span class="label" id="sim-cap">Concept simulation</span>
+          <span class="label label--fg live">MONOLITH · Mission view</span>
+          <span class="sim__head-r"><span class="label" id="sim-cap">Concept simulation</span><button class="btn btn--sm btn--ghost" type="button" id="sim-replay" aria-label="Replay mission">↻ Replay</button></span>
         </div>
         <div class="sim" id="sim">
-          <canvas id="sim-canvas" role="img" aria-label="Simulation: a servicing craft approaches a satellite with a stowed solar panel. A dashed outline shows the delayed telemetry position, a solid outline shows the predicted real-time position."></canvas>
+          <canvas id="sim-canvas" role="img" aria-label="Concept simulation of a full servicing mission: the REMORA servicer approaches a tumbling satellite, matches its spin, captures it with gecko-inspired pads and stops the tumble. The OCTOPUS crawler then frees the jammed hinge and the stuck solar panel deploys. A dashed outline shows delayed telemetry, a solid outline the predicted real-time position."></canvas>
         </div>
+        <div class="sim__status" aria-live="polite">
+          <span class="label label--cyan" id="sim-step">01 / 07</span>
+          <b id="sim-msg">REMORA closing on a tumbling client</b>
+          <span class="label" id="sim-t">T+00.0 s</span>
+        </div>
+        <ol class="phasebar" id="sim-phases" aria-hidden="true">
+          <li><i></i><span>Approach</span></li>
+          <li><i></i><span>Sync</span></li>
+          <li><i></i><span>Capture</span></li>
+          <li><i></i><span>Detumble</span></li>
+          <li><i></i><span>Crawl</span></li>
+          <li><i></i><span>Unjam</span></li>
+          <li><i></i><span>Deploy</span></li>
+        </ol>
         <div class="readouts" aria-live="off">
-          <div><span class="label">Range</span><b id="ro-range">— m</b></div>
+          <div><span class="label">To contact</span><b id="ro-range">— m</b></div>
           <div><span class="label">Closing</span><b id="ro-rate">— m/s</b></div>
           <div class="warn"><span class="label">Lag gap</span><b id="ro-gap">— m</b></div>
-          <div><span class="label">Model error</span><b id="ro-err">— m</b></div>
+          <div><span class="label">Tumble</span><b id="ro-tum">— °/s</b></div>
         </div>
         <div class="panel__foot">
           <label class="slider label" for="lat">Latency
@@ -706,7 +733,7 @@
               <span class="label tag">12-month deliverable · Kinetic ground prototype</span>
             </div>
             <dl class="spec">
-              <div><dt class="label">REMORA</dt><dd><strong>Modular docking claw</strong>Tracking, approach and latching on the client spacecraft.</dd></div>
+              <div><dt class="label">REMORA</dt><dd><strong>Modular docking claw</strong>Tracking, spin-matching and latching with gecko-inspired pads. No grapple fixture needed on the client.</dd></div>
               <div><dt class="label">OCTOPUS</dt><dd><strong>Servicing micro-crawler</strong>Surface mobility and a toolhead for mechanical unjamming.</dd></div>
               <div><dt class="label">Path</dt><dd><strong>Simulation → mechatronic demonstrator</strong>From a physics-based digital twin to a 3D-printed, actuated ground prototype.</dd></div>
             </dl>
@@ -723,10 +750,112 @@
             </div>
             <dl class="spec">
               <div><dt class="label">C1 · Kinematics</dt><dd><strong>Adaptive compliant toolheads</strong>One lightweight element that reshapes into several capture and tool forms, without a mechanical tool changer.</dd></div>
-              <div><dt class="label">C2 · Anchoring</dt><dd><strong>Zero-power surface grip</strong>Residue-free attachment to non-magnetic composite hulls in vacuum and cold.</dd></div>
+              <div><dt class="label">C2 · Anchoring</dt><dd><strong>Gecko-inspired dry adhesion</strong>Zero-power, residue-free grip on smooth, non-magnetic hulls in vacuum and cold. <a class="label label--cyan" href="#grip">How it grabs ↓</a></dd></div>
             </dl>
           </div>
         </div>
+      </div>
+
+      <!-- ---------- capture & hold: gecko grip ---------- -->
+      <div class="grip" id="grip">
+        <div class="grid12 grip__head reveal">
+          <div class="sec__idx"><span class="n">02.1</span><span class="label">Capture &amp; hold</span><span class="label label--cyan">REMORA × gecko grip</span></div>
+          <div class="sec__title">
+            <h3>How we grab a satellite that was never built to be grabbed.</h3>
+            <p>Most satellites in orbit have no docking port and no grapple fixture. Their hulls are smooth composite, glass or painted panels, so magnets and hooks have nothing to hold. REMORA's capture pads borrow the gecko's trick: microscopic wedge structures that stick through van der Waals forces once they are pulled sideways, and let go when that pull is removed.</p>
+          </div>
+        </div>
+
+        <div class="steps reveal">
+          <article class="step">
+            <svg viewBox="0 0 240 132" aria-hidden="true">
+              <g fill="none" stroke-width="1.2">
+                <path class="stroke-fg" d="M16 104H224"/>
+                <path class="stroke" opacity=".5" d="M28 104l-8 10M44 104l-8 10M60 104l-8 10M76 104l-8 10M92 104l-8 10M108 104l-8 10M124 104l-8 10M140 104l-8 10M156 104l-8 10M172 104l-8 10M188 104l-8 10M204 104l-8 10M220 104l-8 10"/>
+                <rect class="stroke-cyan" x="100" y="10" width="40" height="22"/>
+                <path class="stroke-cyan" d="M104 32L80 54L74 70M136 32L160 54L166 70"/>
+                <rect class="stroke-cyan" x="62" y="70" width="24" height="5"/>
+                <rect class="stroke-cyan" x="154" y="70" width="24" height="5"/>
+                <path class="stroke" d="M120 40V86" stroke-dasharray="2 4"/>
+                <path class="stroke" d="M115 80l5 6 5-6"/>
+              </g>
+              <text class="svg-text" x="16" y="128">SPIN MATCHED · Δv ≈ 0</text>
+            </svg>
+            <span class="label label--cyan">Step 01</span>
+            <h3 class="h3">Match, then approach</h3>
+            <p>MONOLITH syncs REMORA to the client's tumble, so the claw arrives with almost no relative motion.</p>
+          </article>
+
+          <article class="step">
+            <svg viewBox="0 0 240 132" aria-hidden="true">
+              <g fill="none" stroke-width="1.2">
+                <path class="stroke-fg" d="M16 104H224"/>
+                <path class="stroke" opacity=".5" d="M28 104l-8 10M44 104l-8 10M60 104l-8 10M76 104l-8 10M92 104l-8 10M108 104l-8 10M124 104l-8 10M140 104l-8 10M156 104l-8 10M172 104l-8 10M188 104l-8 10M204 104l-8 10M220 104l-8 10"/>
+                <rect class="stroke-cyan" x="100" y="40" width="40" height="22"/>
+                <path class="stroke-cyan" d="M104 62L82 84L78 98M136 62L158 84L162 98"/>
+                <rect class="stroke-cyan" x="66" y="98" width="24" height="5"/>
+                <rect class="stroke-cyan" x="150" y="98" width="24" height="5"/>
+                <circle class="stroke" cx="200" cy="34" r="22"/>
+                <path class="stroke" d="M184 50L170 98" stroke-dasharray="2 3"/>
+                <path class="stroke-fg" d="M181 44H219"/>
+                <path class="stroke-cyan" d="M186 44l3-12M192 44l3-12M198 44l3-12M204 44l3-12M210 44l3-12"/>
+              </g>
+              <text class="svg-text" x="16" y="128">CONTACT · NO PUSH NEEDED</text>
+            </svg>
+            <span class="label label--cyan">Step 02</span>
+            <h3 class="h3">Soft touch</h3>
+            <p>Pads covered in microscopic wedges meet the hull. They need almost no pressing force, so a free-floating client isn't pushed away.</p>
+          </article>
+
+          <article class="step">
+            <svg viewBox="0 0 240 132" aria-hidden="true">
+              <g fill="none" stroke-width="1.2">
+                <path class="stroke-fg" d="M16 104H224"/>
+                <path class="stroke" opacity=".5" d="M28 104l-8 10M44 104l-8 10M60 104l-8 10M76 104l-8 10M92 104l-8 10M108 104l-8 10M124 104l-8 10M140 104l-8 10M156 104l-8 10M172 104l-8 10M188 104l-8 10M204 104l-8 10M220 104l-8 10"/>
+                <rect class="stroke-cyan" x="100" y="40" width="40" height="22"/>
+                <path class="stroke-cyan" d="M104 62L86 84L84 98M136 62L154 84L156 98"/>
+                <rect class="stroke-cyan fill-cyan" x="72" y="98" width="24" height="5"/>
+                <rect class="stroke-cyan fill-cyan" x="144" y="98" width="24" height="5"/>
+                <path class="stroke-cyan" d="M60 90h18m-4-3l4 3-4 3M180 90h-18m4-3l-4 3 4 3"/>
+                <circle class="stroke" cx="200" cy="34" r="22"/>
+                <path class="stroke" d="M184 50L166 98" stroke-dasharray="2 3"/>
+                <path class="stroke-fg" d="M181 44H219"/>
+                <path class="stroke-cyan" d="M184 43l10-3M190 43l10-3M196 43l10-3M202 43l10-3M208 43l10-3"/>
+              </g>
+              <text class="svg-text svg-text--cyan" x="16" y="128">SHEAR LOAD → ADHESION ON</text>
+            </svg>
+            <span class="label label--cyan">Step 03</span>
+            <h3 class="h3">Shear lock</h3>
+            <p>The arms draw the pads toward each other. Loaded sideways, the wedges bend flat, the contact area jumps, and the grip locks.</p>
+          </article>
+
+          <article class="step">
+            <svg viewBox="0 0 240 132" aria-hidden="true">
+              <g fill="none" stroke-width="1.2">
+                <path class="stroke-fg" d="M16 104H224"/>
+                <path class="stroke" opacity=".5" d="M28 104l-8 10M44 104l-8 10M60 104l-8 10M76 104l-8 10M92 104l-8 10M108 104l-8 10M124 104l-8 10M140 104l-8 10M156 104l-8 10M172 104l-8 10M188 104l-8 10M204 104l-8 10M220 104l-8 10"/>
+                <rect class="stroke-cyan" x="100" y="40" width="40" height="22"/>
+                <path class="stroke-cyan" d="M104 62L86 84L84 98M136 62L160 78L170 86"/>
+                <rect class="stroke-cyan fill-cyan" x="72" y="98" width="24" height="5"/>
+                <rect class="stroke-cyan" x="160" y="86" width="24" height="5" transform="rotate(-24 160 91)"/>
+                <path class="stroke" d="M196 96q12-8 6-22m-5 3l5-3 2 6"/>
+              </g>
+              <text class="svg-text svg-text--cyan" x="16" y="24">HOLD · 0 W</text>
+              <text class="svg-text" x="16" y="128">PEEL TO RELEASE · NO RESIDUE</text>
+            </svg>
+            <span class="label label--cyan">Step 04</span>
+            <h3 class="h3">Hold, then peel</h3>
+            <p>Holding takes no power. To let go, the arms relax the sideways pull and peel the pads off, leaving nothing behind on the client.</p>
+          </article>
+        </div>
+
+        <div class="gripspec reveal">
+          <div><span class="label">Holding power</span><b>Passive · 0 W</b></div>
+          <div><span class="label">Client surface</span><b>Smooth, non-magnetic, no fixture</b></div>
+          <div><span class="label">Environment</span><b>Vacuum · thermal cycling</b></div>
+          <div><span class="label">Status</span><b>Concept research · C2</b></div>
+        </div>
+        <p class="label grip__note">Design goals, not test results. Bench tests of the pad concept are part of the planned R&amp;D work.</p>
       </div>
     </div>
   </section>
@@ -929,7 +1058,6 @@
   <div class="wrap ftr">
     <span class="label">© <span id="yr">2026</span> OZ Industries GmbH (in formation) · Graz, Styria, Austria</span>
     <nav class="label">
-      <a href="work-system.html">Briefing deck</a>
       <a href="https://www.linkedin.com/in/ozbayemrah" target="_blank" rel="noopener">LinkedIn</a>
       <a href="mailto:emrah.oezbay@edu.fh-joanneum.at">Email</a>
       <span>Rev C · 2026</span>
@@ -943,22 +1071,6 @@
 (function () {
   var root = document.documentElement;
   document.getElementById("yr").textContent = new Date().getFullYear();
-
-  /* ---------- theme (dark primary) ---------- */
-  var themeBtn = document.getElementById("theme");
-  var themeListeners = [];
-  function isLight() { return root.getAttribute("data-theme") === "light"; }
-  function syncTheme() {
-    themeBtn.setAttribute("aria-pressed", String(isLight()));
-    themeBtn.setAttribute("aria-label", isLight() ? "Switch to dark theme" : "Switch to light theme");
-    themeListeners.forEach(function (f) { f(); });
-  }
-  themeBtn.addEventListener("click", function () {
-    if (isLight()) root.removeAttribute("data-theme"); else root.setAttribute("data-theme", "light");
-    try { localStorage.setItem("theme", isLight() ? "light" : "dark"); } catch (e) {}
-    syncTheme();
-  });
-  syncTheme();
 
   /* ---------- UTC clock ---------- */
   var utc = document.getElementById("utc");
@@ -1024,23 +1136,80 @@
   placeGantt();
   if (narrow.addEventListener) narrow.addEventListener("change", placeGantt);
 
-  /* ---------- MONOLITH predictive-view simulation ----------
-     A servicer rehearses an approach on a client satellite with a
-     stowed panel. Telemetry arrives L seconds late (dashed ghost);
-     the predictive model shows the estimated present (solid). */
+  /* ---------- MONOLITH mission simulation ----------
+     One full servicing run, looped. REMORA approaches a tumbling client,
+     matches its spin and captures it with gecko-style pads; the stack is
+     detumbled; OCTOPUS crawls to the jammed hinge and frees it; the panel
+     deploys. Telemetry arrives L seconds late (dashed ghost), MONOLITH
+     shows the estimated present (solid). Everything is a pure function
+     of mission time t, so the latency slider can redraw any frame. */
   var wrap = document.getElementById("sim");
   var cv = document.getElementById("sim-canvas");
   var ctx = cv.getContext("2d");
   var lat = document.getElementById("lat"), latV = document.getElementById("lat-v");
-  var ro = { range: document.getElementById("ro-range"), rate: document.getElementById("ro-rate"), gap: document.getElementById("ro-gap"), err: document.getElementById("ro-err") };
+  var ro = { range: document.getElementById("ro-range"), rate: document.getElementById("ro-rate"), gap: document.getElementById("ro-gap"), tum: document.getElementById("ro-tum") };
+  var stepEl = document.getElementById("sim-step"), msgEl = document.getElementById("sim-msg"), tEl = document.getElementById("sim-t");
+  var phaseLis = Array.prototype.slice.call(document.querySelectorAll("#sim-phases li"));
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var C = {};
-  function readColors() {
+  (function () {
     var s = getComputedStyle(root);
     ["--cyan", "--amber", "--fg", "--muted", "--dim", "--line", "--line-2", "--bg-1"].forEach(function (k) { C[k] = s.getPropertyValue(k).trim(); });
+  })();
+
+  /* mission timeline (seconds) */
+  var PH = [
+    { e: 13,   m: "REMORA closing on a tumbling client" },
+    { e: 20,   m: "Matching the tumble · aligning to the dock face" },
+    { e: 22.5, m: "Gecko pads touch → shear load → locked" },
+    { e: 26.5, m: "Stack stabilised · tumble rate to zero" },
+    { e: 31.5, m: "OCTOPUS crawling to the jammed hinge" },
+    { e: 34,   m: "Toolhead freeing the hinge" },
+    { e: 38,   m: "Panel B deploying" }
+  ];
+  var DONE = "Service complete · satellite operational";
+  var T_END = 44;
+
+  function cl(x, a, b) { return Math.max(a, Math.min(b, x)); }
+  function seg(t, a, b) { return cl((t - a) / (b - a), 0, 1); }
+  function ss(x) { x = cl(x, 0, 1); return x * x * (3 - 2 * x); }
+  function wrapPi(x) { while (x > Math.PI) x -= 2 * Math.PI; while (x < -Math.PI) x += 2 * Math.PI; return x; }
+
+  var BODY = 2.2, CW = 1.5, PL = 0.55, RC = BODY / 2 + CW / 2 + PL, HOLD = 8;
+  var W0 = 0.11, A0 = -1.7;
+  /* client attitude: constant tumble until locked, then detumbled */
+  function spin(t) {
+    if (t < 22.5) return A0 + W0 * t;
+    var u = seg(t, 22.5, 26.5);
+    return A0 + W0 * 22.5 + W0 * 4 * (u - u * u / 2);
   }
-  readColors();
-  themeListeners.push(function () { readColors(); if (!running) draw(simT); });
+  function spinRate(t) { return t < 22.5 ? W0 : W0 * (1 - seg(t, 22.5, 26.5)); }
+  /* servicer position (m, client-centred): approach to a hold point,
+     sync to the dock axis (perpendicular to both panels), close in */
+  function servicer(t) {
+    t = Math.max(0, t);
+    var r = t < 13 ? 20 + (HOLD - 20) * ss(t / 13) : t < 17 ? HOLD : HOLD + (RC - HOLD) * ss(seg(t, 17, 20));
+    var tw = -2.45 + 0.35 * Math.sin(2 * Math.PI * t / 41) + 0.15 * Math.sin(2 * Math.PI * t / 13);
+    var k = ss(seg(t, 13, 17));
+    var th = tw + k * wrapPi(spin(t) - Math.PI / 2 - tw);
+    return { x: r * Math.cos(th), y: r * Math.sin(th), r: r };
+  }
+  function clawOpen(t) { return 1 - ss(seg(t, 20.4, 22)); }
+  function padLoad(t) { return t < 20 ? 0 : 0.35 * seg(t, 20, 20.5) + 0.65 * seg(t, 21, 22.5); }
+  /* OCTOPUS path in client body frame: out of REMORA, along the dock face, down to the hinge */
+  var OP = [[0, -RC + 0.25], [0, -1.32], [-1.32, -1.32], [-1.32, -0.3]];
+  var OL = [0], OT = 0;
+  for (var oi = 1; oi < OP.length; oi++) { OT += Math.hypot(OP[oi][0] - OP[oi - 1][0], OP[oi][1] - OP[oi - 1][1]); OL.push(OT); }
+  function octo(u) {
+    var d = u * OT;
+    for (var i = 1; i < OP.length; i++) {
+      if (d <= OL[i] || i === OP.length - 1) {
+        var f = cl((d - OL[i - 1]) / (OL[i] - OL[i - 1]), 0, 1);
+        return [OP[i - 1][0] + (OP[i][0] - OP[i - 1][0]) * f, OP[i - 1][1] + (OP[i][1] - OP[i - 1][1]) * f];
+      }
+    }
+  }
+  function octoU(t) { return ss(seg(t, 27, 31.5)) - ss(seg(t, 39, 42.5)); }
 
   var W = 0, H = 0, dpr = 1;
   function resize() {
@@ -1051,117 +1220,232 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     if (!running) draw(simT);
   }
-
-  var PERIOD = 28;
-  function radius(t) { var u = (t % PERIOD) / PERIOD; return 5 + 15 * (0.5 + 0.5 * Math.cos(2 * Math.PI * u)); }
-  function pos(t) {
-    var r = radius(t), th = -2.45 + 0.55 * Math.sin(2 * Math.PI * t / 41) + 0.25 * Math.sin(2 * Math.PI * t / 13);
-    return { x: r * Math.cos(th), y: r * Math.sin(th), r: r };
-  }
   function L() { return parseFloat(lat.value); }
 
+  var lastPhase = -1;
   function draw(t) {
-    var cx = W * 0.54, cy = H * 0.53, s = Math.min(W, H) / 2 / 22.5;
-    var lag = L();
+    /* camera pushes in for the close work, pulls back out at the end */
+    var zoom = ss(seg(t, 9, 19)) * (1 - ss(seg(t, 41, 43.6)));
+    var cx = W * 0.5, cy = H * 0.52, view = 22.5 - 13.5 * zoom, s = Math.min(W, H) / 2 / view;
+    var lag = L(), a = spin(t), ca = Math.cos(a), sa = Math.sin(a);
+    function P(lx, ly) { return { x: cx + (lx * ca - ly * sa) * s, y: cy + (lx * sa + ly * ca) * s }; }
     ctx.clearRect(0, 0, W, H);
-
-    /* range rings + crosshair */
     ctx.lineWidth = 1;
     ctx.font = "10px 'JetBrains Mono', monospace";
-    [5, 10, 20].forEach(function (m) {
+
+    /* range rings + crosshair */
+    [2, 5, 10, 20].forEach(function (m) {
+      if (m === 2 && view > 14) return;
       ctx.strokeStyle = C["--line-2"];
       ctx.setLineDash(m === 20 ? [] : [2, 4]);
       ctx.beginPath(); ctx.arc(cx, cy, m * s, 0, Math.PI * 2); ctx.stroke();
       ctx.fillStyle = C["--dim"];
-      ctx.fillText(m + " m", cx + m * s * 0.71 + 4, cy + m * s * 0.71 + 12);
+      if (m * 0.71 < view * 0.9) ctx.fillText(m + " m", cx + m * s * 0.71 + 4, cy - m * s * 0.71 - 4);
     });
     ctx.setLineDash([]);
     ctx.strokeStyle = C["--line"];
     ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(W, cy); ctx.moveTo(cx, 0); ctx.lineTo(cx, H); ctx.stroke();
 
-    /* client satellite (slow tumble) */
-    var a = t * 0.11;
+    /* client satellite */
+    var b = BODY * s, dep = ss(seg(t, 34, 38)), unj = seg(t, 31.5, 34);
     ctx.save(); ctx.translate(cx, cy); ctx.rotate(a);
-    var b = 2.2 * s;
     ctx.strokeStyle = C["--fg"]; ctx.lineWidth = 1.3;
     ctx.strokeRect(-b / 2, -b / 2, b, b);
+    ctx.lineWidth = 1;
     ctx.strokeStyle = C["--muted"];
     ctx.strokeRect(b / 2 + 0.35 * s, -0.5 * s, 5.2 * s, 1.0 * s);
     ctx.beginPath(); ctx.moveTo(b / 2, 0); ctx.lineTo(b / 2 + 0.35 * s, 0);
     for (var k = 1; k < 4; k++) { var px = b / 2 + 0.35 * s + k * 1.3 * s; ctx.moveTo(px, -0.5 * s); ctx.lineTo(px, 0.5 * s); }
     ctx.stroke();
-    ctx.strokeStyle = C["--amber"];
-    ctx.strokeRect(-b / 2 - 1.15 * s, -0.6 * s, 0.8 * s, 1.2 * s);
-    ctx.beginPath(); ctx.moveTo(-b / 2, 0); ctx.lineTo(-b / 2 - 0.35 * s, 0); ctx.stroke();
-    ctx.setLineDash([3, 3]); ctx.globalAlpha = 0.4;
-    ctx.strokeRect(-b / 2 - 0.35 * s - 5.2 * s, -0.5 * s, 5.2 * s, 1.0 * s);
-    ctx.setLineDash([]); ctx.globalAlpha = 1;
-    ctx.restore();
-    var lx = cx + Math.cos(a + Math.PI) * 3.6 * s, ly = cy + Math.sin(a + Math.PI) * 3.6 * s;
-    ctx.fillStyle = C["--amber"];
-    ctx.fillText("PANEL B · STOWED", Math.max(6, Math.min(W - 110, lx - 50)), Math.max(14, ly + (ly < cy ? -10 : 18)));
-
-    /* telemetry trail (what the ground actually received) */
-    ctx.fillStyle = C["--muted"];
-    for (var i = 1; i <= 16; i++) {
-      var q = pos(t - lag - i * 0.35);
-      ctx.globalAlpha = 0.5 * (1 - i / 17);
-      ctx.fillRect(cx + q.x * s - 1, cy + q.y * s - 1, 2, 2);
+    /* panel B: stowed → released → deployed */
+    var len = 0.8 + 4.4 * dep, hgt = 1.2 - 0.2 * dep, x0 = -b / 2 - 0.35 * s;
+    ctx.strokeStyle = t >= 34 ? C["--cyan"] : C["--amber"];
+    ctx.lineWidth = 1.2;
+    ctx.strokeRect(x0 - len * s, -hgt / 2 * s, len * s, hgt * s);
+    ctx.beginPath(); ctx.moveTo(-b / 2, 0); ctx.lineTo(x0, 0);
+    for (var k2 = 1; k2 < 4; k2++) { if (k2 * 1.3 < len - 0.1) { var qx = x0 - k2 * 1.3 * s; ctx.moveTo(qx, -hgt / 2 * s); ctx.lineTo(qx, hgt / 2 * s); } }
+    ctx.stroke();
+    if (dep === 0) {
+      ctx.setLineDash([3, 3]); ctx.globalAlpha = 0.35; ctx.strokeStyle = C["--amber"];
+      ctx.strokeRect(x0 - 5.2 * s, -0.5 * s, 5.2 * s, 1.0 * s);
+      ctx.setLineDash([]); ctx.globalAlpha = 1;
     }
-    ctx.globalAlpha = 1;
+    ctx.restore();
 
-    var now = pos(t), old = pos(t - lag);
-    var ex = 0.05 * lag * lag * Math.sin(t * 1.3), ey = 0.05 * lag * lag * Math.cos(t * 1.7);
+    /* panel label */
+    var plab = dep >= 1 ? "PANEL B · DEPLOYED" : t >= 34 ? "PANEL B · DEPLOYING" : t >= 31.5 ? "PANEL B · RELEASING" : "PANEL B · STOWED";
+    var lp = P(-BODY / 2 - 0.35 - len / 2, 0), lw = ctx.measureText(plab).width;
+    var off = (hgt / 2) * s + 14;
+    ctx.fillStyle = t >= 34 ? C["--cyan"] : C["--amber"];
+    ctx.fillText(plab, cl(lp.x - lw / 2, 6, W - lw - 6), cl(lp.y + (lp.y < cy ? -off : off + 6), 14, H - 8));
+
+    /* hinge: jammed (amber) → freed (cyan) */
+    var hg = P(-BODY / 2 - 0.175, 0);
+    if (t < 38) {
+      var pulse = t >= 31.5 && t < 34 ? 0.5 + 0.5 * Math.sin(t * 14) : 0;
+      ctx.strokeStyle = unj >= 1 ? C["--cyan"] : C["--amber"];
+      ctx.globalAlpha = t < 26.5 ? 0.6 : 1;
+      ctx.beginPath(); ctx.arc(hg.x, hg.y, 0.32 * s + pulse * 3, 0, Math.PI * 2); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+
+    /* telemetry trail (what the ground actually received), approach only */
+    var trailA = 1 - seg(t, 19, 21);
+    if (trailA > 0) {
+      ctx.fillStyle = C["--muted"];
+      for (var i = 1; i <= 16; i++) {
+        var tq = t - lag - i * 0.35;
+        if (tq < 0) break;
+        var q = servicer(tq);
+        ctx.globalAlpha = trailA * 0.5 * (1 - i / 17);
+        ctx.fillRect(cx + q.x * s - 1, cy + q.y * s - 1, 2, 2);
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    var now = servicer(t), old = servicer(t - lag);
+    var free = 1 - seg(t, 18, 20);
+    var ex = 0.05 * lag * lag * Math.sin(t * 1.3) * free, ey = 0.05 * lag * lag * Math.cos(t * 1.7) * free;
     var pr = { x: now.x + ex, y: now.y + ey };
 
-    function craft(p, ghost) {
-      var x = cx + p.x * s, y = cy + p.y * s, ang = Math.atan2(-p.y, -p.x), w = 1.5 * s;
+    function craft(p, ghost, open, load) {
+      var x = cx + p.x * s, y = cy + p.y * s, ang = Math.atan2(-p.y, -p.x), w = CW * s, pl = PL * s;
       ctx.save(); ctx.translate(x, y); ctx.rotate(ang);
       ctx.lineWidth = 1.4;
       ctx.strokeStyle = ghost ? C["--muted"] : C["--cyan"];
       if (ghost) ctx.setLineDash([3, 3]);
       ctx.strokeRect(-w / 2, -w / 2, w, w);
+      var ty = w * (0.2 + 0.3 * open);
       ctx.beginPath();
-      ctx.moveTo(w / 2, -w / 3); ctx.lineTo(w / 2 + w * 0.6, -w / 2.2);
-      ctx.moveTo(w / 2, w / 3); ctx.lineTo(w / 2 + w * 0.6, w / 2.2);
+      ctx.moveTo(w / 2, -w / 3); ctx.lineTo(w / 2 + pl, -ty);
+      ctx.moveTo(w / 2, w / 3); ctx.lineTo(w / 2 + pl, ty);
       ctx.stroke();
+      ctx.setLineDash([]);
+      if (!ghost) {
+        var pw = Math.max(2, 0.12 * s), ph = 0.34 * s;
+        [-ty, ty].forEach(function (yy) {
+          ctx.globalAlpha = 0.15 + 0.85 * load;
+          ctx.fillStyle = C["--cyan"];
+          ctx.fillRect(w / 2 + pl - pw, yy - ph / 2, pw, ph);
+          ctx.globalAlpha = 1;
+          ctx.strokeRect(w / 2 + pl - pw, yy - ph / 2, pw, ph);
+        });
+      }
       ctx.restore();
       return { x: x, y: y };
     }
-    var g = craft(old, true), c = craft(pr, false);
+    var g = craft(old, true, clawOpen(t - lag), 0);
+    var c = craft(pr, false, clawOpen(t), padLoad(t));
 
-    /* gap between telemetry and prediction */
-    ctx.strokeStyle = C["--amber"]; ctx.lineWidth = 1; ctx.setLineDash([2, 3]);
-    ctx.beginPath(); ctx.moveTo(g.x, g.y); ctx.lineTo(c.x, c.y); ctx.stroke(); ctx.setLineDash([]);
+    /* lock pulse at the contact face */
+    if (t >= 21.6 && t < 23.4) {
+      var u = seg(t, 21.6, 23.4), fp = P(0, -BODY / 2);
+      ctx.strokeStyle = C["--cyan"]; ctx.globalAlpha = 1 - u;
+      ctx.beginPath(); ctx.arc(fp.x, fp.y, (0.6 + 2.6 * u) * s, 0, Math.PI * 2); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
 
-    /* labels sit on opposite sides of the approach line so they never collide */
-    var dx = c.x - cx, dy = c.y - cy, dl = Math.hypot(dx, dy) || 1, nx = -dy / dl, ny = dx / dl;
-    if (nx < 0) { nx = -nx; ny = -ny; }
+    /* lag gap between telemetry and prediction */
+    if (Math.hypot(g.x - c.x, g.y - c.y) > 1) {
+      ctx.strokeStyle = C["--amber"]; ctx.lineWidth = 1; ctx.setLineDash([2, 3]);
+      ctx.beginPath(); ctx.moveTo(g.x, g.y); ctx.lineTo(c.x, c.y); ctx.stroke(); ctx.setLineDash([]);
+    }
+
+    /* OCTOPUS crawler */
+    var ou = octoU(t);
+    if (ou > 0.001) {
+      var ob = octo(ou), op = P(ob[0], ob[1]), orr = 0.24 * s;
+      var moving = (t > 27 && t < 31.5) || (t > 39 && t < 42.5);
+      var wig = moving ? Math.sin(t * 16) * 0.35 : 0;
+      ctx.strokeStyle = C["--cyan"]; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.arc(op.x, op.y, orr, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      for (var lg = 0; lg < 4; lg++) {
+        var la = a + Math.PI / 4 + lg * Math.PI / 2 + (lg % 2 ? wig : -wig);
+        ctx.moveTo(op.x + Math.cos(la) * orr, op.y + Math.sin(la) * orr);
+        ctx.lineTo(op.x + Math.cos(la) * orr * 2.1, op.y + Math.sin(la) * orr * 2.1);
+      }
+      ctx.stroke();
+      /* toolhead reaching into the hinge */
+      var reach = ss(seg(t, 31.5, 32)) * (1 - ss(seg(t, 34, 34.6)));
+      if (reach > 0) {
+        var tx = op.x + (hg.x - op.x) * reach, ty2 = op.y + (hg.y - op.y) * reach;
+        ctx.beginPath(); ctx.moveTo(op.x, op.y); ctx.lineTo(tx, ty2); ctx.stroke();
+        ctx.save(); ctx.translate(tx, ty2); ctx.rotate(t * 6);
+        ctx.beginPath(); ctx.moveTo(-4, 0); ctx.lineTo(4, 0); ctx.moveTo(0, -4); ctx.lineTo(0, 4); ctx.stroke();
+        ctx.restore();
+      }
+      if (t < 38.5) {
+        ctx.fillStyle = C["--cyan"];
+        var ow = ctx.measureText("OCTOPUS").width;
+        ctx.fillText("OCTOPUS", cl(op.x + (op.x < cx ? -ow - 2.6 * orr : 2.6 * orr), 6, W - ow - 6), cl(op.y + 4, 14, H - 8));
+      }
+    }
+
+    /* labels */
     ctx.textBaseline = "middle";
-    ctx.fillStyle = C["--cyan"]; ctx.textAlign = "left";
-    ctx.fillText("PREDICTED", c.x + nx * 22, c.y + ny * 22);
-    ctx.fillStyle = C["--muted"]; ctx.textAlign = "right";
-    ctx.fillText("TELEMETRY T−" + lag.toFixed(1) + "s", g.x - nx * 22, g.y - ny * 22);
+    if (t < 19.5) {
+      /* labels sit on opposite sides of the approach line so they never collide */
+      var dx = c.x - cx, dy = c.y - cy, dl = Math.hypot(dx, dy) || 1, nx = -dy / dl, ny = dx / dl;
+      if (nx < 0) { nx = -nx; ny = -ny; }
+      var tlab = "TELEMETRY T−" + lag.toFixed(1) + "s", tw2 = ctx.measureText(tlab).width, pw2 = ctx.measureText("PREDICTED").width;
+      ctx.fillStyle = C["--cyan"]; ctx.textAlign = "left";
+      ctx.fillText("PREDICTED", cl(c.x + nx * 22, 6, W - pw2 - 6), cl(c.y + ny * 22, 10, H - 10));
+      ctx.fillStyle = C["--muted"]; ctx.textAlign = "right";
+      ctx.fillText(tlab, cl(g.x - nx * 22, tw2 + 6, W - 6), cl(g.y - ny * 22, 10, H - 10));
+    } else {
+      var ux = c.x - cx, uy = c.y - cy, ul = Math.hypot(ux, uy) || 1;
+      var rl = t < 22 ? "REMORA · CONTACT" : "REMORA · LOCKED";
+      var rx = c.x + ux / ul * (CW * s + 10), ry = c.y + uy / ul * (CW * s + 10);
+      ctx.fillStyle = C["--cyan"]; ctx.textAlign = ux < 0 ? "right" : "left";
+      ctx.fillText(rl, rx, cl(ry, 12, H - 12));
+    }
     ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
 
+    /* start / loop fade */
+    var fa = Math.min(seg(t, 0, 0.8), 1 - seg(t, T_END - 0.8, T_END));
+    if (fa < 1) { ctx.globalAlpha = 1 - fa; ctx.fillStyle = C["--bg-1"]; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
+
     /* readouts */
-    var r1 = pos(t + 0.05).r, rate = (r1 - now.r) / 0.05;
-    ro.range.textContent = now.r.toFixed(1) + " m";
-    ro.rate.textContent = (rate <= 0 ? "−" : "+") + Math.abs(rate).toFixed(2) + " m/s";
+    var dr = (servicer(t + 0.05).r - now.r) / 0.05, toC = Math.max(0, now.r - RC);
+    ro.range.textContent = toC.toFixed(toC >= 10 ? 1 : 2) + " m";
+    ro.rate.textContent = (Math.abs(dr) < 0.005 ? "0.00" : (dr < 0 ? "−" : "+") + Math.abs(dr).toFixed(2)) + " m/s";
     ro.gap.textContent = Math.hypot(now.x - old.x, now.y - old.y).toFixed(2) + " m";
-    ro.err.textContent = "±" + Math.hypot(ex, ey).toFixed(2) + " m";
+    ro.tum.textContent = (spinRate(t) * 180 / Math.PI).toFixed(1) + " °/s";
+
+    /* mission status */
+    var ph = PH.length;
+    for (var pi = 0; pi < PH.length; pi++) { if (t < PH[pi].e) { ph = pi; break; } }
+    if (ph !== lastPhase) {
+      lastPhase = ph;
+      stepEl.textContent = ph < PH.length ? ("0" + (ph + 1) + " / 07") : "07 / 07 ✓";
+      msgEl.textContent = ph < PH.length ? PH[ph].m : DONE;
+      phaseLis.forEach(function (li, j) { li.classList.toggle("on", j === ph); li.classList.toggle("done", j < ph); });
+    }
+    phaseLis.forEach(function (li, j) {
+      var st = j ? PH[j - 1].e : 0;
+      li.firstElementChild.style.transform = "scaleX(" + seg(t, st, PH[j].e).toFixed(3) + ")";
+    });
+    var tsx = t.toFixed(1);
+    tEl.textContent = "T+" + (tsx.length < 4 ? "0" + tsx : tsx) + " s";
   }
 
-  var simT = 9, last = null, running = false, visible = true, raf = 0;
+  var simT = reduce ? 40 : 0, last = null, running = false, visible = true, once = false, raf = 0;
   function frame(ts) {
     if (last !== null) simT += Math.min(0.05, (ts - last) / 1000);
     last = ts;
+    if (once && simT >= 40) { simT = 40; draw(simT); stop(); once = false; return; }
+    if (simT >= T_END) simT -= T_END;
     draw(simT);
     raf = requestAnimationFrame(frame);
   }
-  function start() { if (running || reduce) return; running = true; last = null; raf = requestAnimationFrame(frame); }
+  function start(force) { if (running || (reduce && !force)) return; running = true; last = null; raf = requestAnimationFrame(frame); }
   function stop() { running = false; cancelAnimationFrame(raf); }
 
+  document.getElementById("sim-replay").addEventListener("click", function () {
+    simT = 0; lastPhase = -1;
+    if (reduce) { once = true; start(true); } else if (!running) { draw(simT); }
+  });
   lat.addEventListener("input", function () { latV.textContent = L().toFixed(1) + " s"; if (!running) draw(simT); });
   if ("ResizeObserver" in window) new ResizeObserver(resize).observe(wrap); else window.addEventListener("resize", resize);
   if ("IntersectionObserver" in window) {

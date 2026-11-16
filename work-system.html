@@ -8,11 +8,9 @@
 <meta property="og:title" content="OZ Industries — R&amp;D briefing">
 <meta property="og:description" content="Human–machine systems for in-orbit servicing. Four slides.">
 <meta name="theme-color" content="#0B0E14">
+<meta name="robots" content="noindex, nofollow">
 
 <link rel="stylesheet" href="assets/fonts/fonts.css">
-<script>
-  try { if (localStorage.getItem("theme") === "light") document.documentElement.setAttribute("data-theme", "light"); } catch (e) {}
-</script>
 <style>
   /* =========================================================
      OZ Industries briefing deck — same tokens as index.html
@@ -37,23 +35,6 @@
     --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
     --display: "Space Grotesk", system-ui, sans-serif;
     --gap: clamp(16px, 2.2vw, 28px);
-  }
-  :root[data-theme="light"] {
-    --bg: #F4F6F8;
-    --bg-1: #ECEFF3;
-    --bg-2: #E2E6EC;
-    --fg: #0B0E14;
-    --muted: #4E5866;
-    --dim: #7A8494;
-    --line: rgba(11, 14, 20, 0.09);
-    --line-2: rgba(11, 14, 20, 0.18);
-    --cyan: #00B8CC;
-    --cyan-ink: #00728A;
-    --cyan-dim: rgba(0, 140, 165, 0.10);
-    --amber: #E07A00;
-    --amber-ink: #A35400;
-    --amber-dim: rgba(224, 122, 0, 0.12);
-    --on-cyan: #F4F6F8;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -115,9 +96,6 @@
   .logo b { color: var(--cyan); }
   .logo__tag { padding: 3px 6px; border: 1px solid var(--line-2); font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
   .top__title { border-left: 1px solid var(--line-2); padding-left: 18px; display: flex; flex-direction: column; }
-  .moon { display: none; }
-  :root[data-theme="light"] .sun { display: none; }
-  :root[data-theme="light"] .moon { display: block; }
   @media (max-width: 760px) {
     .top__title, .btn--back span, .logo__tag { display: none; }
     .top__right { gap: 8px; }
@@ -180,12 +158,6 @@
     border: 1px solid var(--line-2);
     background: radial-gradient(closest-side, rgba(0, 229, 255, .06), transparent 70%), var(--bg-1);
     overflow: hidden;
-  }
-  :root[data-theme="light"] .viz {
-    --viz-line: #3A4250;
-    --viz-point: #00728A;
-    --viz-point-opacity: 0.3;
-    background: radial-gradient(closest-side, rgba(0, 114, 138, .05), transparent 70%), #FAFBFC;
   }
   .viz canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; }
   .viz canvas:active { cursor: grabbing; }
@@ -323,10 +295,6 @@
     <a href="index.html" class="btn btn--back" aria-label="Back to website">← <span>Website</span></a>
     <button class="btn btn--sq" type="button" id="fs-toggle" aria-label="Toggle fullscreen" title="Fullscreen (F)">
       <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg>
-    </button>
-    <button class="btn btn--sq" type="button" id="theme" aria-pressed="false" aria-label="Switch to light theme">
-      <svg class="sun" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.4 4.4l2.1 2.1M17.5 17.5l2.1 2.1M4.4 19.6l2.1-2.1M17.5 6.5l2.1-2.1"/></g></svg>
-      <svg class="moon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
     </button>
   </div>
 </header>
@@ -494,23 +462,6 @@
 <script src="assets/vendor/GLTFLoader.js"></script>
 <script src="assets/vendor/DRACOLoader.js"></script>
 <script>
-  /* theme toggle — dark primary, same storage key as index.html */
-  (function () {
-    var root = document.documentElement;
-    var btn = document.getElementById("theme");
-    function isLight() { return root.getAttribute("data-theme") === "light"; }
-    function update() {
-      btn.setAttribute("aria-pressed", String(isLight()));
-      btn.setAttribute("aria-label", isLight() ? "Switch to dark theme" : "Switch to light theme");
-    }
-    update();
-    btn.addEventListener("click", function () {
-      if (isLight()) root.removeAttribute("data-theme"); else root.setAttribute("data-theme", "light");
-      try { localStorage.setItem("theme", isLight() ? "light" : "dark"); } catch (e) {}
-      update();
-    });
-  })();
-
   /* deck: arrows / space / PageUp-Down / Home-End, swipe, dots,
      #2-style deep links, F for fullscreen */
   (function () {
