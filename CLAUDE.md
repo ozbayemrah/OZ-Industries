@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-**OZ Industries GmbH** (in formation): website + 4-slide R&D briefing deck for an aerospace R&D venture in Graz (human–machine systems for in-orbit servicing). Active successor of `../XUX/` (old working name "XUX Studio"). Do new work here, not in `XUX/`.
+**OZ Industries GmbH** (in formation): website + 4-slide R&D briefing deck for an aerospace R&D venture in Graz (human–machine systems for in-orbit servicing). Successor of the old `XUX/` site (working name "XUX Studio"; that folder no longer exists).
 
 ## Structure
 - `index.html`, `work-system.html`: static pages, inline CSS/JS, no build step. Both share the same `:root` tokens, so keep them in sync.
@@ -27,4 +27,4 @@
 
 ## Testing / hosting
 - Serve over `http://` (`python -m http.server`); GLB models fail on `file://`.
-- GitHub Pages from `main` (`ozbayemrah/oz-industries`).
+- GitHub Pages from `main` (`ozbayemrah/OZ-Industries`, recreated 2026-11-16; URL is case-sensitive: ozbayemrah.github.io/OZ-Industries/).
